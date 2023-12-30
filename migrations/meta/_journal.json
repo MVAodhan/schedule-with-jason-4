@@ -1,0 +1,48 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1703395104928,
+      "tag": "0000_mighty_jetstream",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1703396556727,
+      "tag": "0001_bitter_sunset_bain",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1703422571905,
+      "tag": "0002_romantic_inertia",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1703424211300,
+      "tag": "0003_majestic_blink",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1703558434547,
+      "tag": "0004_curvy_the_hood",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1703559715108,
+      "tag": "0005_condemned_vampiro",
+      "breakpoints": true
+    }
+  ]
+}
