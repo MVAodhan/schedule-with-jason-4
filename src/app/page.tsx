@@ -22,6 +22,7 @@ export default function Home() {
   useEffect(() => {
     getUser()
     getEpisodes()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -41,7 +42,6 @@ export default function Home() {
                   <Button className="bg-red-500 hover:bg-red-500 text-black ">
                     <Trash2 />
                   </Button>
-                  <Button>Increase Population</Button>
                 </div>
               </span>
             </CardHeader>
