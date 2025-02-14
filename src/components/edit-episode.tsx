@@ -112,7 +112,7 @@ const EditEpisodeForm = ({ episode }: { episode: Episode }) => {
           </div>
 
           <Button type="submit" className="w-full" onClick={log}>
-            Submit
+            Update
           </Button>
         </div>
       </CardContent>

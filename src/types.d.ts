@@ -12,4 +12,11 @@ export interface Episode extends RecordModel {
   scheduled_tweet: boolean
   ninety_minute_tweet: boolean
   live_tweet: boolean
+  links?: []
+}
+
+export interface ListLink {
+  id: string
+  label: string
+  value: string
 }

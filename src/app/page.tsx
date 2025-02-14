@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { pb } from '@/lib/pocketbase'
-import { useStore } from '@/lib/userStore'
+import { useStore } from '@/lib/zustand-stores'
 import { Episode } from '@/types'
 import { Pencil, Trash2 } from 'lucide-react'
 import Link from 'next/link'
