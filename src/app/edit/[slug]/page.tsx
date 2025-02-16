@@ -38,9 +38,13 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
   }
 
   const saveLinks = async () => {
-    console.log(episode?.id)
     await pb.collection('episodes').update(episode!.id, { links: JSON.stringify(links) })
   }
+
+  // const updateDate = async () => {
+  //   const date = new Date(2025, 2, 8, 6, 30, 0, 0)
+  //   await pb.collection('episodes').update(episode!.id, { date: date })
+  // }
   useEffect(() => {
     getSlug()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -55,6 +59,7 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
   useEffect(() => {
     if (!episode) return
     setLinks(episode.links!)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [episode])
 
   return (
@@ -95,6 +100,47 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
                     <Button onClick={saveLinks}>
                       <Save className="h-4 w-4 mr-2" />
                       Save Links
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        const date = new Date(episode.date)
+                        const utc = date.toLocaleString('en-US', {
+                          timeZone: 'UTC',
+                          year: 'numeric',
+                          month: '2-digit',
+                          day: '2-digit',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          second: '2-digit',
+                          hour12: false,
+                        })
+                        const pstDate = date.toLocaleString('en-US', {
+                          timeZone: 'America/Los_Angeles',
+                          year: 'numeric',
+                          month: '2-digit',
+                          day: '2-digit',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          second: '2-digit',
+                          hour12: false,
+                        })
+                        const nzst = date.toLocaleString('en-US', {
+                          timeZone: 'Pacific/Auckland',
+                          year: 'numeric',
+                          month: '2-digit',
+                          day: '2-digit',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          second: '2-digit',
+                          hour12: false,
+                        })
+
+                        console.log(utc)
+                        console.log(pstDate)
+                        console.log(nzst)
+                      }}
+                    >
+                      Log Date
                     </Button>
                   </div>
                 </CardFooter>

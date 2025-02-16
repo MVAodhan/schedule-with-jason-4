@@ -1,36 +1,48 @@
 'use client'
 
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
+import { DatePicker } from './date-picker'
+
+import { DateTime } from 'luxon'
+
+import { pb } from '@/lib/pocketbase'
 
 const NewEpisode = () => {
   const titleRef = useRef<HTMLInputElement | null>(null)
 
-  const dateRef = useRef<HTMLInputElement | null>(null)
-  const timeRef = useRef<HTMLInputElement | null>(null)
+  const [date, setDate] = useState<Date>()
+
   const descriptionRef = useRef<HTMLInputElement | null>(null)
   const guestNameRef = useRef<HTMLInputElement | null>(null)
   const guestTwitterRef = useRef<HTMLInputElement | null>(null)
 
-  const log = () => {
-    console.log(dateRef.current?.value)
-    console.log(timeRef.current?.value)
+  const createNewEpisode = async () => {
+    const dateTimeSplit = date?.toISOString().split('T')
+    const dateSplit = dateTimeSplit![0].split('-')
+    const pst = DateTime.fromObject(
+      {
+        year: Number(dateSplit[0]),
+        month: Number(dateSplit[1]),
+        day: Number(dateSplit[2]) + 1,
+        hour: 9,
+        minute: 30,
+      },
+      { zone: 'America/Los_Angeles' },
+    )
+    const utc = pst.setZone('utc')
+    await pb.collection('episodes').create({
+      title: titleRef.current?.value,
+      slug: 'test-slug',
+      date: utc,
+      description: descriptionRef.current?.value,
+      guest_name: guestNameRef.current?.value,
+    })
   }
-
-  // const addNewEpisode = () => {
-  //   const formData = {
-  //     title: titleRef.current?.value,
-  //     slug: slugRef.current?.value,
-  //     date: dateRef.current?.value,
-  //     time: timeRef.current?.value,
-  //     description: descriptionRef.current?.value,
-  //     guest_name: guestNameRef.current?.value,
-  //     guest_twitter: guestTwitterRef.current?.value,
-  //   }
-  // }
 
   return (
     <Card className="w-full max-w-2xl mx-auto">
@@ -58,17 +70,28 @@ const NewEpisode = () => {
                 className="w-full"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="date" className="text-md font-bold">
-                Date
-              </Label>
-              <Input id="date" type="date" ref={dateRef} className="w-full" />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="time" className="text-md font-bold">
-                Time
-              </Label>
-              <Input id="time" type="time" ref={timeRef} className="w-full" />
+            <div>
+              <div className="space-y-2 flex flex-col ">
+                <Label htmlFor="date" className="text-md font-bold">
+                  Date
+                </Label>
+                <DatePicker setDate={setDate} date={date!} />
+              </div>
+              <div className="space-y-2 mt-2 flex flex-col ">
+                <Label className="text-md font-bold">Time</Label>
+                <Select
+                  onValueChange={(e) => {
+                    console.log(e)
+                  }}
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Select Time (PST)" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="9:30">9:30</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             <div className="space-y-2">
@@ -99,8 +122,8 @@ const NewEpisode = () => {
             />
           </div>
 
-          <Button type="submit" className="w-full" onClick={log}>
-            Submit
+          <Button type="submit" className="w-full" onClick={createNewEpisode}>
+            Create New Episode
           </Button>
         </div>
       </CardContent>
