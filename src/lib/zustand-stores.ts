@@ -62,3 +62,20 @@ export const useLinkStore = create<LinkStore>((set) => ({
     }),
   setLinks: (links) => set({ links: links }),
 }))
+type ChapterStoreState = { chapters: string }
+
+type ChapterStoreActions = {
+  setChapters: (chapters: string) => void
+  getChapters: () => void
+}
+
+type ChapterStore = ChapterStoreState & ChapterStoreActions
+
+export const useChapterStore = create<ChapterStore>((set) => ({
+  chapters: '',
+  setChapters: (chapters) => set({ chapters: chapters }),
+  getChapters: () =>
+    set((state: ChapterStoreState) => {
+      return { chapters: state.chapters }
+    }),
+}))

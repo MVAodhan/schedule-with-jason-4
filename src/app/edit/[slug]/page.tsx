@@ -7,11 +7,14 @@ import { useEffect, useRef, useState } from 'react'
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import LinkList from '@/components/link-list'
-import { Card, CardContent, CardFooter } from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Plus, Save } from 'lucide-react'
 import { Input } from '@/components/ui/input'
-import { useLinkStore } from '@/lib/zustand-stores'
+import { useChapterStore, useLinkStore } from '@/lib/zustand-stores'
+import { generateYoutubeDescription } from '@/lib/utils'
+import { Textarea } from '@/components/ui/textarea'
+import { Label } from '@/components/ui/label'
 
 const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
   const [slug, setSlug] = useState<string>('')
@@ -20,7 +23,9 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
   const addLink = useLinkStore((state) => state.addLink)
   const links = useLinkStore((state) => state.links)
   const setLinks = useLinkStore((state) => state.setLinks)
+  const setChapters = useChapterStore((state) => state.setChapters)
 
+  const chaptersRef = useRef<HTMLTextAreaElement | null>(null)
   const labelRef = useRef<HTMLInputElement | null>(null)
   const valueRef = useRef<HTMLInputElement | null>(null)
 
@@ -68,12 +73,23 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
         <Tabs defaultValue="edit" className="w-[600px] ">
           <TabsList>
             <TabsTrigger value="edit">Edit</TabsTrigger>
-            <TabsTrigger value="links">Links</TabsTrigger>
+            <TabsTrigger value="links">Links & Chapters</TabsTrigger>
           </TabsList>
           <TabsContent value="edit">
             <EditEpisodeForm episode={episode} />
           </TabsContent>
           <TabsContent value="links">
+            <Card>
+              <CardHeader>
+                <Label>Chapters</Label>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-5">
+                <Textarea ref={chaptersRef} />
+                <Button onClick={() => setChapters(chaptersRef.current!.value)}>
+                  Save Chapters
+                </Button>
+              </CardContent>
+            </Card>
             <div className="w-full grid grid-cols-2">
               <LinkList />
               <Card>
@@ -101,7 +117,7 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
                       <Save className="h-4 w-4 mr-2" />
                       Save Links
                     </Button>
-                    <Button
+                    {/* <Button
                       onClick={() => {
                         const date = new Date(episode.date)
                         const utc = date.toLocaleString('en-US', {
@@ -141,9 +157,17 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
                       }}
                     >
                       Log Date
-                    </Button>
+                    </Button> */}
                   </div>
                 </CardFooter>
+                <Button
+                  className="w-full"
+                  onClick={() =>
+                    navigator.clipboard.writeText(generateYoutubeDescription(episode, links))
+                  }
+                >
+                  Copy Youtube Description
+                </Button>
               </Card>
             </div>
           </TabsContent>
