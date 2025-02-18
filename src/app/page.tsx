@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { pb } from '@/lib/pocketbase'
+import { returnNZSTString, returnPSTString } from '@/lib/utils'
 import { useStore } from '@/lib/zustand-stores'
 import { Episode } from '@/types'
 import { Pencil, Trash2 } from 'lucide-react'
@@ -47,11 +48,11 @@ export default function Home() {
             </CardHeader>
             <CardContent>
               <div className="flex flex-col gap-2">
-                Name: {episode.guest_name}
+                Guest Name: {episode.guest_name}
                 <div className="flex flex-col gap-2">
-                  <span>US Date: {episode.date}</span>
+                  <span>US Date: {episode ? returnPSTString(episode!.date) : ''}</span>
 
-                  <span>NZ Date: {episode.date}</span>
+                  <span>NZ Date: {episode ? returnNZSTString(episode.date) : ''}</span>
                 </div>
               </div>
             </CardContent>

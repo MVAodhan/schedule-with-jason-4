@@ -11,6 +11,7 @@ import { DatePicker } from './date-picker'
 import { DateTime } from 'luxon'
 
 import { pb } from '@/lib/pocketbase'
+import { slugify } from '@/lib/utils'
 
 const NewEpisode = () => {
   const titleRef = useRef<HTMLInputElement | null>(null)
@@ -35,9 +36,10 @@ const NewEpisode = () => {
       { zone: 'America/Los_Angeles' },
     )
     const utc = pst.setZone('utc')
+    const slug = slugify(titleRef.current!.value)
     await pb.collection('episodes').create({
       title: titleRef.current?.value,
-      slug: 'test-slug',
+      slug: slug,
       date: utc,
       description: descriptionRef.current?.value,
       guest_name: guestNameRef.current?.value,

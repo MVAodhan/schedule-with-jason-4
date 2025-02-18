@@ -22,7 +22,7 @@ const LinkList = () => {
             <div key={link.id} className="flex flex-col gap-2">
               <Label>{link.label}</Label>
               <div className="flex">
-                <Input placeholder={link.value} className="flex-1" />
+                <Input defaultValue={link.value} className="flex-1" />
                 <Button
                   variant="destructive"
                   size="icon"

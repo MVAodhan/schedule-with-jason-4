@@ -12,9 +12,10 @@ import { Button } from '@/components/ui/button'
 import { Plus, Save } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { useChapterStore, useLinkStore } from '@/lib/zustand-stores'
-import { generateYoutubeDescription } from '@/lib/utils'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
+import Caldendar from '@/components/caldendar'
+import Buffer from '@/components/buffer'
 
 const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
   const [slug, setSlug] = useState<string>('')
@@ -73,10 +74,22 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
         <Tabs defaultValue="edit" className="w-[600px] ">
           <TabsList>
             <TabsTrigger value="edit">Edit</TabsTrigger>
-            <TabsTrigger value="links">Links & Chapters</TabsTrigger>
+            <TabsTrigger value="calendar">Calendar</TabsTrigger>
+            <TabsTrigger value="buffer">Buffer</TabsTrigger>
+            {/* <TabsTrigger value="links">Links & Chapters</TabsTrigger> */}
           </TabsList>
           <TabsContent value="edit">
             <EditEpisodeForm episode={episode} />
+          </TabsContent>
+          <TabsContent value="calendar">
+            <Card>
+              <CardContent>
+                <Caldendar episode={episode} />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="buffer">
+            <Buffer episode={episode} />
           </TabsContent>
           <TabsContent value="links">
             <Card>
@@ -117,57 +130,8 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
                       <Save className="h-4 w-4 mr-2" />
                       Save Links
                     </Button>
-                    {/* <Button
-                      onClick={() => {
-                        const date = new Date(episode.date)
-                        const utc = date.toLocaleString('en-US', {
-                          timeZone: 'UTC',
-                          year: 'numeric',
-                          month: '2-digit',
-                          day: '2-digit',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                          second: '2-digit',
-                          hour12: false,
-                        })
-                        const pstDate = date.toLocaleString('en-US', {
-                          timeZone: 'America/Los_Angeles',
-                          year: 'numeric',
-                          month: '2-digit',
-                          day: '2-digit',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                          second: '2-digit',
-                          hour12: false,
-                        })
-                        const nzst = date.toLocaleString('en-US', {
-                          timeZone: 'Pacific/Auckland',
-                          year: 'numeric',
-                          month: '2-digit',
-                          day: '2-digit',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                          second: '2-digit',
-                          hour12: false,
-                        })
-
-                        console.log(utc)
-                        console.log(pstDate)
-                        console.log(nzst)
-                      }}
-                    >
-                      Log Date
-                    </Button> */}
                   </div>
                 </CardFooter>
-                <Button
-                  className="w-full"
-                  onClick={() =>
-                    navigator.clipboard.writeText(generateYoutubeDescription(episode, links))
-                  }
-                >
-                  Copy Youtube Description
-                </Button>
               </Card>
             </div>
           </TabsContent>
