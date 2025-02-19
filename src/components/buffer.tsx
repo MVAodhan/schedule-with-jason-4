@@ -22,6 +22,7 @@ const Buffer = ({ episode }: { episode: Episode }) => {
 
   const updateBufferStatuses = async () => {
     await pb.collection('episodes').update(episode!.id, {
+      youtube_link: ytLiveLinkDefault,
       scheduled_tweet: twTweet,
       ninety_minute_tweet: nmTweet,
       live_tweet: lTweet,

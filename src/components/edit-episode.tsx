@@ -1,16 +1,19 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Episode } from '@/types'
+import { DatePicker } from './date-picker'
+import { returnPSTString } from '@/lib/utils'
 
-const EditEpisodeForm = ({ episode }: { episode: Episode }) => {
+const Edit = ({ episode }: { episode: Episode }) => {
   const titleRef = useRef<HTMLInputElement | null>(null)
 
-  const dateRef = useRef<HTMLInputElement | null>(null)
+  const [date, setDate] = useState('')
+
   const timeRef = useRef<HTMLInputElement | null>(null)
   const descriptionRef = useRef<HTMLInputElement | null>(null)
   const guestNameRef = useRef<HTMLInputElement | null>(null)
@@ -18,31 +21,14 @@ const EditEpisodeForm = ({ episode }: { episode: Episode }) => {
 
   useEffect(() => {
     titleRef.current!.value = episode.title
-    // dateRef.current!.value = episode.date
-    // timeRef.current!.value = episode.time
+    setDate(returnPSTString(episode.date))
     descriptionRef.current!.value = episode.description
     guestNameRef.current!.value = episode.guest_name
-    guestTwitterRef.current!.value = episode.guest_twitter
+    if (episode.guest_twitter) {
+      guestTwitterRef.current!.value = episode.guest_twitter
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  const log = () => {
-    console.log(dateRef.current?.value)
-    console.log(timeRef.current?.value)
-  }
-
-  // const addNewEpisode = () => {
-  //   const formData = {
-  //     title: titleRef.current?.value,
-  //     slug: slugRef.current?.value,
-  //     date: dateRef.current?.value,
-  //     time: timeRef.current?.value,
-  //     description: descriptionRef.current?.value,
-  //     guest_name: guestNameRef.current?.value,
-  //     guest_twitter: guestTwitterRef.current?.value,
-  //   }
-
-  //   // Handle form submission here
-  // }
 
   return (
     <Card className="w-full max-w-2xl mx-auto">
@@ -72,13 +58,14 @@ const EditEpisodeForm = ({ episode }: { episode: Episode }) => {
             </div>
             <div className="space-y-2">
               <Label htmlFor="date" className="text-md font-bold">
-                Date
+                Date (PST)
               </Label>
-              <Input id="date" type="date" ref={dateRef} className="w-full" />
+
+              {/* <DatePicker date={date!} setDate={setDate} /> */}
             </div>
             <div className="space-y-2">
               <Label htmlFor="time" className="text-md font-bold">
-                Time
+                Time (PST)
               </Label>
               <Input id="time" type="time" ref={timeRef} className="w-full" />
             </div>
@@ -111,7 +98,7 @@ const EditEpisodeForm = ({ episode }: { episode: Episode }) => {
             />
           </div>
 
-          <Button type="submit" className="w-full" onClick={log}>
+          <Button type="submit" className="w-full">
             Update
           </Button>
         </div>
@@ -120,4 +107,4 @@ const EditEpisodeForm = ({ episode }: { episode: Episode }) => {
   )
 }
 
-export default EditEpisodeForm
+export default Edit

@@ -1,6 +1,6 @@
 'use client'
 
-import EditEpisodeForm from '@/components/edit-episode'
+import Edit from '@/components/edit-episode'
 import { pb } from '@/lib/pocketbase'
 import { Episode } from '@/types'
 import { useEffect, useRef, useState } from 'react'
@@ -16,6 +16,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import Caldendar from '@/components/caldendar'
 import Buffer from '@/components/buffer'
+import Website from '@/components/website'
 
 const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
   const [slug, setSlug] = useState<string>('')
@@ -74,19 +75,19 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
         <Tabs defaultValue="edit" className="w-[600px] ">
           <TabsList>
             <TabsTrigger value="edit">Edit</TabsTrigger>
+            <TabsTrigger value="website">Website</TabsTrigger>
             <TabsTrigger value="calendar">Calendar</TabsTrigger>
             <TabsTrigger value="buffer">Buffer</TabsTrigger>
             {/* <TabsTrigger value="links">Links & Chapters</TabsTrigger> */}
           </TabsList>
           <TabsContent value="edit">
-            <EditEpisodeForm episode={episode} />
+            <Edit episode={episode} />
+          </TabsContent>
+          <TabsContent value="website">
+            <Website episode={episode} />
           </TabsContent>
           <TabsContent value="calendar">
-            <Card>
-              <CardContent>
-                <Caldendar episode={episode} />
-              </CardContent>
-            </Card>
+            <Caldendar episode={episode} />
           </TabsContent>
           <TabsContent value="buffer">
             <Buffer episode={episode} />
