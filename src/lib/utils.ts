@@ -117,34 +117,30 @@ export const returnNZSTString = (date: string) => {
   return nzstDate
 }
 
-
 export const twoWeekTweet = (description: string, link: string) => {
   const tweet = `📣 Just Scheduled
 
-  ${description}
+${description}
 
-  Details: ${link}
-
-  `
+Details: ${link}
+`
   return tweet
 }
 export const ninetyMinuteTweet = (description: string, link: string) => {
   const tweet = `⚠️ In 90 Minutes
 
-  ${description}
+${description}
 
-  Details: ${link}
-
-  `
+Details: ${link}
+`
   return tweet
 }
-export const liveTweet = (description: string, link: string) => {
+export const liveTweet = (description: string) => {
   const tweet = `🔴 Live
 
-  ${description}
+${description}
 
-  Watch Live: ${link}
-
-  `
+Watch Live: ${liveLink}
+`
   return tweet
 }

@@ -8,10 +8,25 @@ import { Button } from './ui/button'
 import { useRef, useState } from 'react'
 import { Input } from './ui/input'
 import { Checkbox } from './ui/checkbox'
+import { liveTweet, ninetyMinuteTweet, twoWeekTweet } from '@/lib/utils'
+import { toast } from '@/hooks/use-toast'
+import { pb } from '@/lib/pocketbase'
 
 const Buffer = ({ episode }: { episode: Episode }) => {
   const bufferDescRef = useRef<HTMLTextAreaElement>(null)
   const [ytLiveLinkDefault, setYtLiveLinkDefault] = useState('')
+
+  const [twTweet, setTwTweet] = useState(false)
+  const [nmTweet, setNmTweet] = useState(false)
+  const [lTweet, setLTweet] = useState(false)
+
+  const updateBufferStatuses = async () => {
+    await pb.collection('episodes').update(episode!.id, {
+      scheduled_tweet: twTweet,
+      ninety_minute_tweet: nmTweet,
+      live_tweet: lTweet,
+    })
+  }
   return (
     <Card>
       <CardContent>
@@ -42,38 +57,75 @@ const Buffer = ({ episode }: { episode: Episode }) => {
           {ytLiveLinkDefault.length > 0 ? (
             <div className="grid grid-cols-3 gap-5 py-5">
               <div className="flex justify-center">
-                <Button>
+                <Button
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      twoWeekTweet(episode.description, ytLiveLinkDefault),
+                    )
+                    toast({
+                      title: 'Copied Two Week Tweet',
+                    })
+                  }}
+                >
                   <Clipboard />
                   Two Weeks
                 </Button>
               </div>
               <div className="flex justify-center">
-                <Button>
+                <Button
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      ninetyMinuteTweet(episode.description, ytLiveLinkDefault),
+                    )
+                    toast({
+                      title: 'Copied Ninety Minute Tweet',
+                    })
+                  }}
+                >
                   <Clipboard />
                   Ninety Munutes
                 </Button>
               </div>
               <div className="flex justify-center">
-                <Button>
+                <Button
+                  onClick={() => {
+                    navigator.clipboard.writeText(liveTweet(episode.description))
+                    toast({
+                      title: 'Copied Live Tweet',
+                    })
+                  }}
+                >
                   <Clipboard />
                   Live
                 </Button>
               </div>
               <div className="flex justify-around">
                 <div>Two Weeks</div>
-                <Checkbox />
+                <Checkbox
+                  defaultChecked={twTweet}
+                  onCheckedChange={() => setTwTweet((prev) => !prev)}
+                />
               </div>
               <div className="flex justify-around">
                 <div>Ninety Minutes</div>
-                <Checkbox />
+                <Checkbox
+                  defaultChecked={nmTweet}
+                  onCheckedChange={() => setNmTweet((prev) => !prev)}
+                />
               </div>
               <div className="flex justify-around">
-                <div>Line</div>
-                <Checkbox />
+                <div>Live</div>
+                <Checkbox
+                  defaultChecked={lTweet}
+                  onCheckedChange={() => setLTweet((prev) => !prev)}
+                />
               </div>
             </div>
           ) : null}
         </div>
+        <Button className="w-full" onClick={updateBufferStatuses}>
+          Save
+        </Button>
       </CardContent>
     </Card>
   )
