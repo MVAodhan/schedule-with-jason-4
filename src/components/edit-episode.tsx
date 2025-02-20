@@ -1,27 +1,24 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Episode } from '@/types'
-import { DatePicker } from './date-picker'
-import { returnPSTString } from '@/lib/utils'
+
+import { returnNZSTString, returnPSTDate, returnPSTString } from '@/lib/utils'
 
 const Edit = ({ episode }: { episode: Episode }) => {
   const titleRef = useRef<HTMLInputElement | null>(null)
 
-  const [date, setDate] = useState('')
-
-  const timeRef = useRef<HTMLInputElement | null>(null)
   const descriptionRef = useRef<HTMLInputElement | null>(null)
   const guestNameRef = useRef<HTMLInputElement | null>(null)
   const guestTwitterRef = useRef<HTMLInputElement | null>(null)
 
   useEffect(() => {
     titleRef.current!.value = episode.title
-    setDate(returnPSTString(episode.date))
+
     descriptionRef.current!.value = episode.description
     guestNameRef.current!.value = episode.guest_name
     if (episode.guest_twitter) {
@@ -56,18 +53,20 @@ const Edit = ({ episode }: { episode: Episode }) => {
                 className="w-full"
               />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 ">
               <Label htmlFor="date" className="text-md font-bold">
                 Date (PST)
               </Label>
 
+              <div>{returnPSTString(episode.date)}</div>
               {/* <DatePicker date={date!} setDate={setDate} /> */}
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="time" className="text-md font-bold">
-                Time (PST)
+            <div className="space-y-2 ">
+              <Label htmlFor="date" className="text-md font-bold">
+                Date (NZST)
               </Label>
-              <Input id="time" type="time" ref={timeRef} className="w-full" />
+
+              <div>{returnNZSTString(episode.date)}</div>
             </div>
 
             <div className="space-y-2">
@@ -100,6 +99,15 @@ const Edit = ({ episode }: { episode: Episode }) => {
 
           <Button type="submit" className="w-full">
             Update
+          </Button>
+          <Button
+            type="submit"
+            className="w-full"
+            onClick={() => {
+              console.log(returnPSTDate(episode.date))
+            }}
+          >
+            Log
           </Button>
         </div>
       </CardContent>

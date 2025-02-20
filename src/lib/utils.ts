@@ -1,5 +1,6 @@
 import { Episode, ListLink } from '@/types'
 import { clsx, type ClassValue } from 'clsx'
+import { DateTime } from 'luxon'
 import { twMerge } from 'tailwind-merge'
 
 export function cn(...inputs: ClassValue[]) {
@@ -101,6 +102,18 @@ export const returnPSTString = (date: string) => {
 
   return pstDate
 }
+export const returnPSTDate = (date: string) => {
+  // const times = date.split(' ')[0]
+
+  const dateObj = DateTime.fromFormat(`${date.split(' ')[0]} 9:00`, 'yyyy-MM-dd H:mm', {
+    zone: 'America/Los_Angeles',
+  }).toJSDate()
+
+  const datefrom = new Date(dateObj)
+  // return dateObj
+  console.log(datefrom)
+}
+
 export const returnNZSTString = (date: string) => {
   const JSDate = new Date(date)
   const nzstDate = JSDate.toLocaleString('en-US', {
