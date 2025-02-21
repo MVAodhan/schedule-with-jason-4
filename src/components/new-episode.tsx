@@ -11,31 +11,25 @@ import { DatePicker } from './date-picker'
 import { DateTime } from 'luxon'
 
 import { pb } from '@/lib/pocketbase'
-import { slugify } from '@/lib/utils'
+import { returnPSTString, slugify } from '@/lib/utils'
 
 const NewEpisode = () => {
   const titleRef = useRef<HTMLInputElement | null>(null)
 
-  const [date, setDate] = useState<Date>()
+  // const [tags, setTags] = useState<string[]>([])
+  const [date, setDate] = useState<Date>(new Date())
+  const [time, setTime] = useState<string>('')
 
   const descriptionRef = useRef<HTMLInputElement | null>(null)
   const guestNameRef = useRef<HTMLInputElement | null>(null)
   const guestTwitterRef = useRef<HTMLInputElement | null>(null)
-
+  const tagsRef = useRef<HTMLInputElement | null>(null)
   const createNewEpisode = async () => {
-    const dateTimeSplit = date?.toISOString().split('T')
-    const dateSplit = dateTimeSplit![0].split('-')
-    const pst = DateTime.fromObject(
-      {
-        year: Number(dateSplit[0]),
-        month: Number(dateSplit[1]),
-        day: Number(dateSplit[2]) + 1,
-        hour: 9,
-        minute: 30,
-      },
-      { zone: 'America/Los_Angeles' },
-    )
-    const utc = pst.setZone('utc')
+    if (!time) {
+      alert('Please select a time')
+      return
+    }
+    const utc = createUTCString(date, time)
     const slug = slugify(titleRef.current!.value)
     await pb.collection('episodes').create({
       title: titleRef.current?.value,
@@ -44,6 +38,21 @@ const NewEpisode = () => {
       description: descriptionRef.current?.value,
       guest_name: guestNameRef.current?.value,
     })
+  }
+
+  const createUTCString = (date: Date, time: string) => {
+    // Takes Date from the DatePick and Makes it into a PST Date
+    const dateObj = DateTime.fromFormat(
+      `${date.toLocaleDateString().replaceAll('/', '-')} ${time}`,
+      'dd-MM-yyyy H:mm',
+      {
+        zone: 'America/Los_Angeles',
+      },
+    ).toJSDate()
+
+    // Converts PST date to UTC string
+    const ustDate = dateObj.toISOString()
+    return ustDate
   }
 
   return (
@@ -83,13 +92,14 @@ const NewEpisode = () => {
                 <Label className="text-md font-bold">Time</Label>
                 <Select
                   onValueChange={(e) => {
-                    console.log(e)
+                    setTime(e)
                   }}
                 >
                   <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Select Time (PST)" />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="9:00">9:00</SelectItem>
                     <SelectItem value="9:30">9:30</SelectItem>
                   </SelectContent>
                 </Select>
@@ -124,7 +134,19 @@ const NewEpisode = () => {
             />
           </div>
 
-          <Button type="submit" className="w-full" onClick={createNewEpisode}>
+          <Input
+            ref={tagsRef}
+            onKeyUp={(e) => {
+              if (e.key === 'Enter') {
+                // setTags((prev: string[]) => {
+                //   return [...prev, tagsRef.current?.value]
+                // })
+                tagsRef.current!.value = ''
+              }
+            }}
+          />
+
+          <Button type="submit" className="w-full" onClick={() => createNewEpisode()}>
             Create New Episode
           </Button>
         </div>

@@ -11,6 +11,7 @@ export interface Episode extends RecordModel {
   calendar?: boolean
   scheduled_tweet?: boolean
   ninety_minute_tweet?: boolean
+  discord?: boolean
   live_tweet?: boolean
   links?: []
 }

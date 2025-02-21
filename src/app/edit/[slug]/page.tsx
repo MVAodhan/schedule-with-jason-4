@@ -17,6 +17,8 @@ import { Label } from '@/components/ui/label'
 import Caldendar from '@/components/caldendar'
 import Buffer from '@/components/buffer'
 import Website from '@/components/website'
+import CopyText from '@/components/copy-text'
+import Discord from '@/components/discord'
 
 const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
   const [slug, setSlug] = useState<string>('')
@@ -47,11 +49,11 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
   const saveLinks = async () => {
     await pb.collection('episodes').update(episode!.id, { links: JSON.stringify(links) })
   }
+  const saveChapters = async () => {
+    setChapters(chaptersRef.current!.value)
+    await pb.collection('episodes').update(episode!.id, { chapters: chaptersRef.current?.value })
+  }
 
-  // const updateDate = async () => {
-  //   const date = new Date(2025, 2, 8, 6, 30, 0, 0)
-  //   await pb.collection('episodes').update(episode!.id, { date: date })
-  // }
   useEffect(() => {
     getSlug()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -78,7 +80,9 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
             <TabsTrigger value="website">Website</TabsTrigger>
             <TabsTrigger value="calendar">Calendar</TabsTrigger>
             <TabsTrigger value="buffer">Buffer</TabsTrigger>
-            {/* <TabsTrigger value="links">Links & Chapters</TabsTrigger> */}
+            <TabsTrigger value="discord">Discord</TabsTrigger>
+            {/* <TabsTrigger value="links">Links & Chapters</TabsTrigger>
+            <TabsTrigger value="copy-btns">Copy Text</TabsTrigger> */}
           </TabsList>
           <TabsContent value="edit">
             <Edit episode={episode} />
@@ -99,9 +103,7 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
               </CardHeader>
               <CardContent className="flex flex-col gap-5">
                 <Textarea ref={chaptersRef} />
-                <Button onClick={() => setChapters(chaptersRef.current!.value)}>
-                  Save Chapters
-                </Button>
+                <Button onClick={() => saveChapters()}>Save Chapters</Button>
               </CardContent>
             </Card>
             <div className="w-full grid grid-cols-2">
@@ -135,6 +137,13 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
                 </CardFooter>
               </Card>
             </div>
+          </TabsContent>
+          <TabsContent value="copy-btns">
+            {episode && episode.links && <CopyText episode={episode} links={episode.links} />}
+          </TabsContent>
+
+          <TabsContent value="discord">
+            <Discord episode={episode} />
           </TabsContent>
         </Tabs>
       )}

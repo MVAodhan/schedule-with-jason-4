@@ -1,7 +1,7 @@
 import { Clipboard } from 'lucide-react'
 import { Button } from './ui/button'
 import { Episode } from '@/types'
-import { liveLink } from '@/lib/utils'
+import { liveLink, returnPSTString } from '@/lib/utils'
 import { Textarea } from './ui/textarea'
 import { Card, CardContent } from './ui/card'
 
@@ -16,6 +16,11 @@ const Caldendar = ({ episode }: { episode: Episode }) => {
               <Button variant="ghost">
                 <Clipboard onClick={() => navigator.clipboard.writeText(`LWJ: ${episode.title}`)} />
               </Button>
+            </div>
+
+            <div>
+              <div>Date (PST)</div>
+              <div>{returnPSTString(episode.date)}</div>
             </div>
           </div>
           <div>

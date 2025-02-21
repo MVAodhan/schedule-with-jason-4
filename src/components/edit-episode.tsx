@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
@@ -15,6 +15,8 @@ const Edit = ({ episode }: { episode: Episode }) => {
   const descriptionRef = useRef<HTMLInputElement | null>(null)
   const guestNameRef = useRef<HTMLInputElement | null>(null)
   const guestTwitterRef = useRef<HTMLInputElement | null>(null)
+
+  const [tags, setTags] = useState<string[]>([])
 
   useEffect(() => {
     titleRef.current!.value = episode.title
