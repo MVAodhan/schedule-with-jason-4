@@ -4,8 +4,11 @@ import { Episode } from '@/types'
 import { liveLink, returnPSTString } from '@/lib/utils'
 import { Textarea } from './ui/textarea'
 import { Card, CardContent } from './ui/card'
+import { useState } from 'react'
+import { Checkbox } from './ui/checkbox'
 
 const Caldendar = ({ episode }: { episode: Episode }) => {
+  const [calendarScheduled, setCalendarScheduled] = useState<boolean>(false)
   return (
     <Card>
       <CardContent>
@@ -63,6 +66,13 @@ const Caldendar = ({ episode }: { episode: Episode }) => {
               >
                 <Clipboard />
               </Button>
+            </div>
+            <div className="w-full">
+              <div>Scheduled</div>
+              <Checkbox
+                defaultChecked={calendarScheduled}
+                onCheckedChange={() => setCalendarScheduled((prev) => !prev)}
+              />
             </div>
           </div>
         </div>

@@ -11,7 +11,8 @@ import { DatePicker } from './date-picker'
 import { DateTime } from 'luxon'
 
 import { pb } from '@/lib/pocketbase'
-import { returnPSTString, slugify } from '@/lib/utils'
+import { slugify } from '@/lib/utils'
+import { Badge } from './ui/badge'
 
 const NewEpisode = () => {
   const titleRef = useRef<HTMLInputElement | null>(null)
@@ -19,14 +20,15 @@ const NewEpisode = () => {
   // const [tags, setTags] = useState<string[]>([])
   const [date, setDate] = useState<Date>(new Date())
   const [time, setTime] = useState<string>('')
+  const [tags, setTags] = useState<string[]>()
 
   const descriptionRef = useRef<HTMLInputElement | null>(null)
   const guestNameRef = useRef<HTMLInputElement | null>(null)
   const guestTwitterRef = useRef<HTMLInputElement | null>(null)
   const tagsRef = useRef<HTMLInputElement | null>(null)
   const createNewEpisode = async () => {
-    if (!time) {
-      alert('Please select a time')
+    if (!time || tags === undefined) {
+      alert('Please make sure to select a time and add tags')
       return
     }
     const utc = createUTCString(date, time)
@@ -82,9 +84,9 @@ const NewEpisode = () => {
               />
             </div>
             <div>
-              <div className="space-y-2 flex flex-col ">
+              <div className="space-y-2 flex flex-col">
                 <Label htmlFor="date" className="text-md font-bold">
-                  Date
+                  Date (PST)
                 </Label>
                 <DatePicker setDate={setDate} date={date!} />
               </div>
@@ -134,17 +136,27 @@ const NewEpisode = () => {
             />
           </div>
 
-          <Input
-            ref={tagsRef}
-            onKeyUp={(e) => {
-              if (e.key === 'Enter') {
-                // setTags((prev: string[]) => {
-                //   return [...prev, tagsRef.current?.value]
-                // })
-                tagsRef.current!.value = ''
-              }
-            }}
-          />
+          <div className="flex flex-col gap-2">
+            <div>Tags</div>
+            <Input
+              ref={tagsRef}
+              onKeyUp={(e) => {
+                if (e.key === 'Enter') {
+                  setTags((prev) => {
+                    const tag = tagsRef.current!.value
+                    if (prev != null) {
+                      return [...prev, tag]
+                    }
+                    return [tag]
+                  })
+                  tagsRef.current!.value = ''
+                }
+              }}
+            />
+            <div className="flex gap-1">
+              {tags && tags.map((tag: string, i) => <Badge key={i}>{tag}</Badge>)}
+            </div>
+          </div>
 
           <Button type="submit" className="w-full" onClick={() => createNewEpisode()}>
             Create New Episode
