@@ -47,8 +47,8 @@ export const formatLinks = (JSONLinks: ListLink[]) => {
   }
 
   let linkSetStrings: string[] = []
-  linkSet.forEach((link) => {
-    const linkString = `- ${link.label}: ${link.value}`
+  linkSet.forEach((link: { label: string; value: string }) => {
+    const linkString = `- ${link!.label!}: ${link.value}`
     linkSetStrings = [...linkSetStrings, linkString]
   })
 
@@ -156,4 +156,17 @@ ${description}
 Watch Live: ${liveLink}
 `
   return tweet
+}
+
+export const captionsBlurb = `*Captions provided by White Coat Captioning (https://whitecoatcaptioning.com/). 
+Communication Access Realtime Translation (CART) is provided in order to facilitate
+communication accessibility and may not be a totally verbatim record of the proceedings.*`
+
+export const getHighlightText = (tech: string, slug: string, twitter?: string, name?: string) => {
+  if (twitter) {
+    return `Did you miss @${twitter} teaching us about ${tech} live on LWJ?
+      No worries! Watch highlights from the episode here, then check out the full episode replay https://www.learnwithjason.dev/${slug}`
+  }
+  return `Did you miss ${name} teaching us about ${tech} live on LWJ?
+No worries! Watch highlights from the episode here, then check out the full episode replay https://www.learnwithjason.dev/${slug}`
 }

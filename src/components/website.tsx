@@ -4,6 +4,7 @@ import { Episode } from '@/types'
 import { Textarea } from './ui/textarea'
 import { returnNZSTString, returnPSTString } from '@/lib/utils'
 import { Checkbox } from './ui/checkbox'
+import { Button } from './ui/button'
 
 const Website = ({ episode }: { episode: Episode }) => {
   const [websiteScheduled, setWebsiteScheduled] = useState<boolean>(false)
@@ -40,12 +41,15 @@ const Website = ({ episode }: { episode: Episode }) => {
             <div>{returnPSTString(episode.date)}</div>
           </div>
         </div>
-        <div>
-          <div>Scheduled</div>
-          <Checkbox
-            defaultChecked={websiteScheduled}
-            onCheckedChange={() => setWebsiteScheduled((prev) => !prev)}
-          />
+        <div className="mt-2 flex flex-col">
+          <div>
+            <div>Scheduled</div>
+            <Checkbox
+              defaultChecked={websiteScheduled}
+              onCheckedChange={() => setWebsiteScheduled((prev) => !prev)}
+            />
+          </div>
+          <Button>Update website status</Button>
         </div>
       </CardContent>
     </Card>

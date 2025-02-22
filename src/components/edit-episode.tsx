@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Episode } from '@/types'
 
-import { returnNZSTString, returnPSTDate, returnPSTString } from '@/lib/utils'
+import { returnNZSTString, returnPSTString } from '@/lib/utils'
 
 const Edit = ({ episode }: { episode: Episode }) => {
   const titleRef = useRef<HTMLInputElement | null>(null)

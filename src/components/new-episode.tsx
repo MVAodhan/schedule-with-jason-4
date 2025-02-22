@@ -26,6 +26,7 @@ const NewEpisode = () => {
   const guestNameRef = useRef<HTMLInputElement | null>(null)
   const guestTwitterRef = useRef<HTMLInputElement | null>(null)
   const tagsRef = useRef<HTMLInputElement | null>(null)
+
   const createNewEpisode = async () => {
     if (!time || tags === undefined) {
       alert('Please make sure to select a time and add tags')
@@ -39,6 +40,7 @@ const NewEpisode = () => {
       date: utc,
       description: descriptionRef.current?.value,
       guest_name: guestNameRef.current?.value,
+      tags: tags,
     })
   }
 
@@ -138,21 +140,21 @@ const NewEpisode = () => {
 
           <div className="flex flex-col gap-2">
             <div>Tags</div>
-            <Input
-              ref={tagsRef}
-              onKeyUp={(e) => {
-                if (e.key === 'Enter') {
-                  setTags((prev) => {
-                    const tag = tagsRef.current!.value
-                    if (prev != null) {
-                      return [...prev, tag]
-                    }
-                    return [tag]
-                  })
-                  tagsRef.current!.value = ''
-                }
+            <Input ref={tagsRef} />
+            <Button
+              onClick={() => {
+                setTags((prev) => {
+                  const tag = tagsRef.current!.value
+                  if (prev != null) {
+                    return [...prev, tag]
+                  }
+                  return [tag]
+                })
+                tagsRef.current!.value = ''
               }}
-            />
+            >
+              Add Tag
+            </Button>
             <div className="flex gap-1">
               {tags && tags.map((tag: string, i) => <Badge key={i}>{tag}</Badge>)}
             </div>

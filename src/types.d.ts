@@ -14,6 +14,7 @@ export interface Episode extends RecordModel {
   discord?: boolean
   live_tweet?: boolean
   links?: []
+  tags?: []
 }
 
 export interface ListLink {

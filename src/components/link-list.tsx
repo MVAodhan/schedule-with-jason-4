@@ -12,7 +12,7 @@ const LinkList = () => {
   const deleteLinks = useLinkStore((state) => state.deleteLink)
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Links</CardTitle>
       </CardHeader>

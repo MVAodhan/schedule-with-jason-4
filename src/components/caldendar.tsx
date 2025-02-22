@@ -67,12 +67,15 @@ const Caldendar = ({ episode }: { episode: Episode }) => {
                 <Clipboard />
               </Button>
             </div>
-            <div className="w-full">
-              <div>Scheduled</div>
-              <Checkbox
-                defaultChecked={calendarScheduled}
-                onCheckedChange={() => setCalendarScheduled((prev) => !prev)}
-              />
+            <div className="mt-2 flex flex-col w-full">
+              <div>
+                <div>Scheduled</div>
+                <Checkbox
+                  defaultChecked={calendarScheduled}
+                  onCheckedChange={() => setCalendarScheduled((prev) => !prev)}
+                />
+              </div>
+              <Button>Update calendar status</Button>
             </div>
           </div>
         </div>

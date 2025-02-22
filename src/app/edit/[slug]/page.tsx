@@ -72,17 +72,17 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
   }, [episode])
 
   return (
-    <main className="h-full w-screen flex justify-center pt-10">
+    <main className="h-full w-screen flex justify-center py-10">
       {episode && (
         <Tabs defaultValue="edit" className="w-[600px] ">
-          <TabsList>
+          <TabsList className="flex bg-transparent">
             <TabsTrigger value="edit">Edit</TabsTrigger>
             <TabsTrigger value="website">Website</TabsTrigger>
             <TabsTrigger value="calendar">Calendar</TabsTrigger>
             <TabsTrigger value="buffer">Buffer</TabsTrigger>
             <TabsTrigger value="discord">Discord</TabsTrigger>
-            {/* <TabsTrigger value="links">Links & Chapters</TabsTrigger>
-            <TabsTrigger value="copy-btns">Copy Text</TabsTrigger> */}
+            <TabsTrigger value="links">Links & Chapters</TabsTrigger>
+            <TabsTrigger value="copy-btns">Copy Text</TabsTrigger>
           </TabsList>
           <TabsContent value="edit">
             <Edit episode={episode} />
@@ -139,7 +139,7 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
             </div>
           </TabsContent>
           <TabsContent value="copy-btns">
-            {episode && episode.links && <CopyText episode={episode} links={episode.links} />}
+            <CopyText episode={episode} links={episode.links} />
           </TabsContent>
 
           <TabsContent value="discord">

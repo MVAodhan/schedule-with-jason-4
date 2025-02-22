@@ -125,7 +125,7 @@ const Buffer = ({ episode }: { episode: Episode }) => {
           ) : null}
         </div>
         <Button className="w-full" onClick={updateBufferStatuses}>
-          Save
+          Update buffer status
         </Button>
       </CardContent>
     </Card>
