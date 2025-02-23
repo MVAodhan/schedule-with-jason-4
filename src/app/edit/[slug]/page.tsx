@@ -47,6 +47,7 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
   }
 
   const saveLinks = async () => {
+    console.log(episode?.id)
     await pb.collection('episodes').update(episode!.id, { links: JSON.stringify(links) })
   }
   const saveChapters = async () => {
@@ -66,7 +67,7 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
   }, [slug])
 
   useEffect(() => {
-    if (!episode) return
+    if (!episode || episode?.links === null) return
     setLinks(episode.links!)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [episode])

@@ -18,7 +18,7 @@ const NewEpisode = () => {
   const titleRef = useRef<HTMLInputElement | null>(null)
 
   // const [tags, setTags] = useState<string[]>([])
-  const [date, setDate] = useState<Date>(new Date())
+  const [date, setDate] = useState<Date | undefined>(new Date())
   const [time, setTime] = useState<string>('')
   const [tags, setTags] = useState<string[]>()
 
@@ -32,7 +32,7 @@ const NewEpisode = () => {
       alert('Please make sure to select a time and add tags')
       return
     }
-    const utc = createUTCString(date, time)
+    const utc = createUTCString(date!, time)
     const slug = slugify(titleRef.current!.value)
     await pb.collection('episodes').create({
       title: titleRef.current?.value,

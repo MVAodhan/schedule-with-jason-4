@@ -2,7 +2,7 @@ import PocketBase from 'pocketbase'
 
 const globalForPB = globalThis as unknown as { pb: PocketBase | undefined }
 
-const pb = globalForPB.pb ?? new PocketBase('http://127.0.0.1:8090')
+const pb = globalForPB.pb ?? new PocketBase(process.env.NEXT_PUBLIC_POCKETBASE_URL)
 
 pb.autoCancellation(false)
 

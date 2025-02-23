@@ -11,6 +11,8 @@ const LinkList = () => {
   const links = useLinkStore((state) => state.links)
   const deleteLinks = useLinkStore((state) => state.deleteLink)
 
+  console.log('links from zustand store', links)
+
   return (
     <Card className="w-full">
       <CardHeader>

@@ -6,7 +6,7 @@ import { Episode, ListLink } from '@/types'
 import { Input } from './ui/input'
 
 const CopyText = ({ episode, links }: { episode: Episode; links?: ListLink[] }) => {
-  const formatLinks = (tags: string) => {
+  const formatTags = (tags: string) => {
     const tagsArr = JSON.parse(tags)
     const formattedTags = tagsArr.join(',')
 
@@ -35,7 +35,7 @@ const CopyText = ({ episode, links }: { episode: Episode; links?: ListLink[] }) 
           {episode.tags && (
             <Button
               onClick={() => {
-                const formattedTags = formatLinks(JSON.stringify(episode.tags))
+                const formattedTags = formatTags(JSON.stringify(episode.tags))
                 navigator.clipboard.writeText(formattedTags!)
               }}
             >

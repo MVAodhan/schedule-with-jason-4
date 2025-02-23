@@ -14,7 +14,7 @@ export function DatePicker({
   setDate,
 }: {
   date: Date
-  setDate: React.Dispatch<React.SetStateAction<Date>>
+  setDate: React.Dispatch<React.SetStateAction<Date | undefined>>
 }) {
   return (
     <Popover>

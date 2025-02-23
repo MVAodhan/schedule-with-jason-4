@@ -6,7 +6,7 @@ import { pb } from '@/lib/pocketbase'
 import { returnNZSTString, returnPSTString } from '@/lib/utils'
 import { useStore } from '@/lib/zustand-stores'
 import { Episode } from '@/types'
-import { Pencil, Trash2 } from 'lucide-react'
+import { Pencil } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
@@ -15,7 +15,9 @@ export default function Home() {
   const [episodes, setEpisodes] = useState<Episode[] | null>(null)
 
   const getEpisodes = async () => {
-    const episodes = (await pb.collection('episodes').getFullList()) as unknown as Episode[]
+    const episodes = (await pb
+      .collection('episodes')
+      .getFullList({ sort: 'date' })) as unknown as Episode[]
 
     setEpisodes(episodes)
   }
@@ -40,9 +42,9 @@ export default function Home() {
                       <Pencil />
                     </Button>
                   </Link>
-                  <Button className="bg-red-500 hover:bg-red-500 text-black ">
+                  {/* <Button className="bg-red-500 hover:bg-red-500 text-black ">
                     <Trash2 />
-                  </Button>
+                  </Button> */}
                 </div>
               </span>
             </CardHeader>
@@ -51,7 +53,6 @@ export default function Home() {
                 Guest Name: {episode.guest_name}
                 <div className="flex flex-col gap-2">
                   <span>US Date: {episode ? returnPSTString(episode!.date) : ''}</span>
-
                   <span>NZ Date: {episode ? returnNZSTString(episode.date) : ''}</span>
                 </div>
               </div>

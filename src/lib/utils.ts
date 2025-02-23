@@ -39,7 +39,7 @@ ${episode.chapters ?? `Chapters: ${episode.chapters}`}`
 }
 
 export const formatLinks = (JSONLinks: ListLink[]) => {
-  const linkSet = new Set()
+  const linkSet: Set<ListLink> = new Set()
   const linkValues = JSONLinks.map((link) => link)
 
   for (const value of linkValues) {
@@ -47,7 +47,7 @@ export const formatLinks = (JSONLinks: ListLink[]) => {
   }
 
   let linkSetStrings: string[] = []
-  linkSet.forEach((link: { label: string; value: string }) => {
+  linkSet.forEach((link) => {
     const linkString = `- ${link!.label!}: ${link.value}`
     linkSetStrings = [...linkSetStrings, linkString]
   })
