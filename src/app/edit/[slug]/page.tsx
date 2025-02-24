@@ -19,6 +19,8 @@ import Buffer from '@/components/buffer'
 import Website from '@/components/website'
 import CopyText from '@/components/copy-text'
 import Discord from '@/components/discord'
+import Title from '@/components/title'
+import { useRouter } from 'next/navigation'
 
 const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
   const [slug, setSlug] = useState<string>('')
@@ -32,6 +34,8 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
   const chaptersRef = useRef<HTMLTextAreaElement | null>(null)
   const labelRef = useRef<HTMLInputElement | null>(null)
   const valueRef = useRef<HTMLInputElement | null>(null)
+
+  const router = useRouter()
 
   const getSlug = async () => {
     const slug = (await params).slug
@@ -49,10 +53,13 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
   const saveLinks = async () => {
     console.log(episode?.id)
     await pb.collection('episodes').update(episode!.id, { links: JSON.stringify(links) })
+    router.push('/')
   }
   const saveChapters = async () => {
     setChapters(chaptersRef.current!.value)
     await pb.collection('episodes').update(episode!.id, { chapters: chaptersRef.current?.value })
+
+    router.push('/')
   }
 
   useEffect(() => {
@@ -100,6 +107,7 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
           <TabsContent value="links">
             <Card>
               <CardHeader>
+                <Title episode={episode} />
                 <Label>Chapters</Label>
               </CardHeader>
               <CardContent className="flex flex-col gap-5">

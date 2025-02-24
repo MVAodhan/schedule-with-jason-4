@@ -1,9 +1,11 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Button } from './ui/button'
-import { Card, CardContent } from './ui/card'
+import { Card, CardContent, CardHeader } from './ui/card'
 import { captionsBlurb, generateYoutubeDescription, getHighlightText } from '@/lib/utils'
 import { Episode, ListLink } from '@/types'
-import { Input } from './ui/input'
+
+import Title from './title'
+import { Textarea } from './ui/textarea'
 
 const CopyText = ({ episode, links }: { episode: Episode; links?: ListLink[] }) => {
   const formatTags = (tags: string) => {
@@ -13,11 +15,24 @@ const CopyText = ({ episode, links }: { episode: Episode; links?: ListLink[] }) 
     return formattedTags
   }
 
-  const techRef = useRef<HTMLInputElement | null>(null)
-  const [tech, setTech] = useState<string>('')
+  const techRef = useRef<HTMLTextAreaElement | null>(null)
+
+  useEffect(() => {
+    const tweet = getHighlightText(
+      '<TECHNOLOGY',
+      episode.slug,
+      episode.guest_twitter,
+      episode.guest_name,
+    )
+
+    techRef.current!.value = tweet
+  }, [])
 
   return (
     <Card>
+      <CardHeader>
+        <Title episode={episode} />
+      </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-4 pt-2">
           {links && (
@@ -44,16 +59,20 @@ const CopyText = ({ episode, links }: { episode: Episode; links?: ListLink[] }) 
           )}
 
           <div className="flex flex-col gap-2">
-            <Input ref={techRef}></Input>
+            <Textarea
+              ref={techRef}
+              defaultValue={techRef.current?.value}
+              className=" flex flex-grow"
+            ></Textarea>
             <Button
               onClick={() => {
-                setTech(techRef.current!.value)
+                navigator.clipboard.writeText(techRef.current!.value)
               }}
             >
-              Update Technology
+              Copy Tweet
             </Button>
           </div>
-          {tech && (
+          {/* {tech && (
             <Button
               className="my-5"
               onClick={() => {
@@ -68,7 +87,7 @@ const CopyText = ({ episode, links }: { episode: Episode; links?: ListLink[] }) 
             >
               Copy Tweet
             </Button>
-          )}
+          )} */}
         </div>
       </CardContent>
     </Card>

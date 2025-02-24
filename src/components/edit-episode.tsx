@@ -8,11 +8,12 @@ import { Button } from '@/components/ui/button'
 import { Episode } from '@/types'
 
 import { returnNZSTString, returnPSTString } from '@/lib/utils'
+import { Textarea } from './ui/textarea'
 
 const Edit = ({ episode }: { episode: Episode }) => {
   const titleRef = useRef<HTMLInputElement | null>(null)
 
-  const descriptionRef = useRef<HTMLInputElement | null>(null)
+  const descriptionRef = useRef<HTMLTextAreaElement | null>(null)
   const guestNameRef = useRef<HTMLInputElement | null>(null)
   const guestTwitterRef = useRef<HTMLInputElement | null>(null)
 
@@ -91,7 +92,7 @@ const Edit = ({ episode }: { episode: Episode }) => {
             <Label htmlFor="description" className="text-md font-bold">
               Description
             </Label>
-            <Input
+            <Textarea
               id="description"
               ref={descriptionRef}
               placeholder="Episode description"

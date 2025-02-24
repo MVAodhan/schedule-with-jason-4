@@ -1,7 +1,7 @@
 'use client'
 
 import { Episode } from '@/types'
-import { Card, CardContent } from './ui/card'
+import { Card, CardContent, CardHeader } from './ui/card'
 import { Textarea } from './ui/textarea'
 import { Clipboard } from 'lucide-react'
 import { Button } from './ui/button'
@@ -11,6 +11,7 @@ import { Checkbox } from './ui/checkbox'
 import { liveTweet, ninetyMinuteTweet, twoWeekTweet } from '@/lib/utils'
 import { toast } from '@/hooks/use-toast'
 import { pb } from '@/lib/pocketbase'
+import Title from './title'
 
 const Buffer = ({ episode }: { episode: Episode }) => {
   const bufferDescRef = useRef<HTMLTextAreaElement>(null)
@@ -30,6 +31,9 @@ const Buffer = ({ episode }: { episode: Episode }) => {
   }
   return (
     <Card>
+      <CardHeader>
+        <Title episode={episode} />
+      </CardHeader>
       <CardContent>
         <div className="flex flex-col py-2 gap-2">
           <div>Buffer Description</div>
