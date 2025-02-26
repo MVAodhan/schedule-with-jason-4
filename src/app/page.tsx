@@ -6,13 +6,12 @@ import { pb } from '@/lib/pocketbase'
 import { returnNZSTString, returnPSTString } from '@/lib/utils'
 import { useStore } from '@/lib/zustand-stores'
 import { Episode } from '@/types'
-import { Pencil, Trash2 } from 'lucide-react'
+import { Pencil } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
