@@ -76,6 +76,7 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
   useEffect(() => {
     if (!episode || episode?.links === null) return
     setLinks(episode.links!)
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [episode])
 
@@ -111,7 +112,7 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
                 <Label>Chapters</Label>
               </CardHeader>
               <CardContent className="flex flex-col gap-5">
-                <Textarea ref={chaptersRef} />
+                <Textarea ref={chaptersRef} defaultValue={episode.chapters} />
                 <Button onClick={() => saveChapters()}>Save Chapters</Button>
               </CardContent>
             </Card>

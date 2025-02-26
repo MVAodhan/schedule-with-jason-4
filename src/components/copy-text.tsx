@@ -19,7 +19,7 @@ const CopyText = ({ episode, links }: { episode: Episode; links?: ListLink[] }) 
 
   useEffect(() => {
     const tweet = getHighlightText(
-      '<TECHNOLOGY',
+      '<TECHNOLOGY>',
       episode.slug,
       episode.guest_twitter,
       episode.guest_name,

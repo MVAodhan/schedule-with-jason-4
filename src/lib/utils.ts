@@ -165,8 +165,8 @@ communication accessibility and may not be a totally verbatim record of the proc
 export const getHighlightText = (tech: string, slug: string, twitter?: string, name?: string) => {
   if (twitter) {
     return `Did you miss @${twitter} teaching us about ${tech} live on LWJ?
-      No worries! Watch highlights from the episode here, then check out the full episode replay https://www.learnwithjason.dev/${slug}`
+      No worries! Watch highlights from the episode here, then check out the full episode replay https://codetv.dev/series/learn-with-jason/s8/${slug}`
   }
   return `Did you miss ${name} teaching us about ${tech} live on LWJ?
-No worries! Watch highlights from the episode here, then check out the full episode replay https://www.learnwithjason.dev/${slug}`
+No worries! Watch highlights from the episode here, then check out the full episode replay https://codetv.dev/series/learn-with-jason/s8/${slug}`
 }

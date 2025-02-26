@@ -6,9 +6,20 @@ import { pb } from '@/lib/pocketbase'
 import { returnNZSTString, returnPSTString } from '@/lib/utils'
 import { useStore } from '@/lib/zustand-stores'
 import { Episode } from '@/types'
-import { Pencil } from 'lucide-react'
+import { Pencil, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 
 export default function Home() {
   const getUser = useStore((state) => state.getUser)
@@ -28,6 +39,10 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const deleteEpisode = async (id: string) => {
+    await pb.collection('episodes').delete(id)
+  }
+
   return (
     <div className="w-screen flex justify-center">
       <div className="mt-10 w-4/5 grid grid-cols-1 lg:w-3/6 gap-5">
@@ -42,9 +57,32 @@ export default function Home() {
                       <Pencil />
                     </Button>
                   </Link>
-                  {/* <Button className="bg-red-500 hover:bg-red-500 text-black ">
-                    <Trash2 />
-                  </Button> */}
+                  <Button className="bg-red-300 hover:bg-red-200 text-black ">
+                    <Dialog>
+                      <DialogTrigger>Delete</DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>
+                            <span className="text-red-400">Delete</span> {episode.title}
+                          </DialogTitle>
+                          <DialogDescription>
+                            This action cannot be undone. This will permanently delete{' '}
+                            {episode.title}
+                          </DialogDescription>
+                        </DialogHeader>
+                        <DialogFooter className="sm:justify-start">
+                          <Button
+                            type="button"
+                            variant="secondary"
+                            className="bg-red-300 hover:bg-red-200 text-black"
+                            onClick={() => deleteEpisode(episode.id)}
+                          >
+                            Delete
+                          </Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                  </Button>
                 </div>
               </span>
             </CardHeader>
