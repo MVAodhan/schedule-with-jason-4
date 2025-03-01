@@ -8,7 +8,7 @@ import { Button } from './ui/button'
 import { useRef, useState } from 'react'
 import { Input } from './ui/input'
 import { Checkbox } from './ui/checkbox'
-import { liveTweet, ninetyMinuteTweet, twoWeekTweet } from '@/lib/utils'
+import { liveTweet, ninetyMinuteTweet, returnPSTDate, twoWeekTweet } from '@/lib/utils'
 import { toast } from '@/hooks/use-toast'
 import { pb } from '@/lib/pocketbase'
 import Title from './title'
@@ -61,7 +61,7 @@ const Buffer = ({ episode }: { episode: Episode }) => {
           </div>
           {ytLiveLinkDefault.length > 0 ? (
             <div className="grid grid-cols-3 gap-5 py-5">
-              <div className="flex justify-center">
+              <div className="flex flex-col justify-center gap-2">
                 <Button
                   onClick={() => {
                     navigator.clipboard.writeText(
@@ -75,8 +75,11 @@ const Buffer = ({ episode }: { episode: Episode }) => {
                   <Clipboard />
                   Two Weeks
                 </Button>
+                <div className="flex justify-center">
+                  {returnPSTDate(episode.date, 'two weeks')}
+                </div>
               </div>
-              <div className="flex justify-center">
+              <div className="flex flex-col justify-center gap-2">
                 <Button
                   onClick={() => {
                     navigator.clipboard.writeText(
@@ -90,8 +93,11 @@ const Buffer = ({ episode }: { episode: Episode }) => {
                   <Clipboard />
                   Ninety Munutes
                 </Button>
+                <div className="flex justify-center">
+                  {returnPSTDate(episode.date, 'ninety minutes')}
+                </div>
               </div>
-              <div className="flex justify-center">
+              <div className="flex flex-col justify-center gap-2">
                 <Button
                   onClick={() => {
                     navigator.clipboard.writeText(liveTweet(episode.description))
@@ -103,6 +109,7 @@ const Buffer = ({ episode }: { episode: Episode }) => {
                   <Clipboard />
                   Live
                 </Button>
+                <div className="flex justify-center">{returnPSTDate(episode.date)}</div>
               </div>
               <div className="flex justify-around">
                 <div>Two Weeks</div>
@@ -125,12 +132,12 @@ const Buffer = ({ episode }: { episode: Episode }) => {
                   onCheckedChange={() => setLTweet((prev) => !prev)}
                 />
               </div>
+              <Button className="w-full col-span-3" onClick={updateBufferStatuses}>
+                Update buffer status
+              </Button>
             </div>
           ) : null}
         </div>
-        <Button className="w-full" onClick={updateBufferStatuses}>
-          Update buffer status
-        </Button>
       </CardContent>
     </Card>
   )

@@ -102,16 +102,48 @@ export const returnPSTString = (date: string) => {
 
   return pstDate
 }
-export const returnPSTDate = (date: string) => {
+export const returnPSTDate = (date: string, offset?: string) => {
   // const times = date.split(' ')[0]
 
-  const dateObj = DateTime.fromFormat(`${date.split(' ')[0]} 9:00`, 'yyyy-MM-dd H:mm', {
-    zone: 'America/Los_Angeles',
-  }).toJSDate()
+  if (offset === 'two weeks') {
+    const dateObj = DateTime.fromFormat(
+      `${date.split(' ')[0]} ${date.split(' ')[1].split('.')[0]}`,
+      'yyyy-MM-dd H:mm:ss',
+      {
+        zone: 'America/Los_Angeles',
+      },
+    )
+      .minus({ weeks: 2, hours: 8 })
+      .toFormat('dd MMM HH:mm')
+      .toString()
+    return dateObj
+  } else if (offset == 'ninety minutes') {
+    const dateObj = DateTime.fromFormat(
+      `${date.split(' ')[0]} ${date.split(' ')[1].split('.')[0]}`,
+      'yyyy-MM-dd H:mm:ss',
+      {
+        zone: 'America/Los_Angeles',
+      },
+    )
+      .minus({ hours: 8, minutes: 90 })
+      .toFormat('dd MMM HH:mm')
+      .toString()
 
-  const datefrom = new Date(dateObj)
-  // return dateObj
-  console.log(datefrom)
+    return dateObj
+  } else {
+    const dateObj = DateTime.fromFormat(
+      `${date.split(' ')[0]} ${date.split(' ')[1].split('.')[0]}`,
+      'yyyy-MM-dd H:mm:ss',
+      {
+        zone: 'America/Los_Angeles',
+      },
+    )
+      .minus({ hours: 8 })
+      .toFormat('dd MMM HH:mm')
+      .toString()
+
+    return dateObj
+  }
 }
 
 export const returnNZSTString = (date: string) => {
