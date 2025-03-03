@@ -6,7 +6,7 @@ import { pb } from '@/lib/pocketbase'
 import { returnNZSTString, returnPSTString } from '@/lib/utils'
 import { useStore } from '@/lib/zustand-stores'
 import { Episode } from '@/types'
-import { Pencil } from 'lucide-react'
+import { Pencil, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
@@ -56,32 +56,34 @@ export default function Home() {
                       <Pencil />
                     </Button>
                   </Link>
-                  <Button className="bg-red-300 hover:bg-red-200 text-black ">
-                    <Dialog>
-                      <DialogTrigger>Delete</DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>
-                            <span className="text-red-400">Delete</span> {episode.title}
-                          </DialogTitle>
-                          <DialogDescription>
-                            This action cannot be undone. This will permanently delete{' '}
-                            {episode.title}
-                          </DialogDescription>
-                        </DialogHeader>
-                        <DialogFooter className="sm:justify-start">
-                          <Button
-                            type="button"
-                            variant="secondary"
-                            className="bg-red-300 hover:bg-red-200 text-black"
-                            onClick={() => deleteEpisode(episode.id)}
-                          >
-                            Delete
-                          </Button>
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
-                  </Button>
+                  <Dialog>
+                    <DialogTrigger>
+                      <Trash2 className="h-[18px] w-[18px] text-red-600 shadow" />
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>
+                          <div className="flex flex-col gap-2">
+                            <span className="text-red-400">Delete</span>
+                            <span>{episode.title}</span>
+                          </div>
+                        </DialogTitle>
+                        <DialogDescription>
+                          This action cannot be undone. This will permanently delete {episode.title}
+                        </DialogDescription>
+                      </DialogHeader>
+                      <DialogFooter className="sm:justify-start">
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          className="bg-red-300 hover:bg-red-200 text-black"
+                          onClick={() => deleteEpisode(episode.id)}
+                        >
+                          Delete
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
                 </div>
               </span>
             </CardHeader>
