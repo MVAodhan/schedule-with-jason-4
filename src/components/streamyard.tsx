@@ -14,10 +14,11 @@ import { useRef } from 'react'
 const Streamyard = ({ episode }: { episode: Episode }) => {
   const ytLinkRef = useRef<HTMLInputElement | null>(null)
   const updateYoutubeLink = async () => {
-    if (ytLinkRef.current?.value !== null) return
-    await pb.collection('episodes').update(episode!.id, {
-      youtube_link: ytLinkRef.current.value,
-    })
+    if (ytLinkRef.current?.value !== null) {
+      await pb.collection('episodes').update(episode.id, {
+        youtube_link: ytLinkRef.current!.value,
+      })
+    }
   }
   const { toast } = useToast()
   return (
@@ -50,7 +51,7 @@ const Streamyard = ({ episode }: { episode: Episode }) => {
           </div>
           <div className="w-full">
             <div>Youtube Link</div>
-            <Input defaultValue={episode.youtube_link} />
+            <Input defaultValue={episode.youtube_link} ref={ytLinkRef} />
           </div>
           <Button
             className="w-full"
