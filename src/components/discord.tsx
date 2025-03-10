@@ -8,13 +8,18 @@ import { Label } from '@radix-ui/react-label'
 import { Textarea } from './ui/textarea'
 import { Checkbox } from './ui/checkbox'
 import { pb } from '@/lib/pocketbase'
+import { useToast } from '@/hooks/use-toast'
 
 const Discord = ({ episode }: { episode: Episode }) => {
+  const { toast } = useToast()
   const [discordChecked, setDiscordChecked] = useState(false)
 
   const updateDiscordStatus = async () => {
     await pb.collection('episodes').update(episode!.id, {
       discord: discordChecked,
+    })
+    toast({
+      title: 'Updated Discord Status',
     })
   }
 
@@ -25,7 +30,14 @@ const Discord = ({ episode }: { episode: Episode }) => {
           <div className="flex items-center ">
             <div className="">{`${episode.title}`}</div>
             <Button variant="ghost">
-              <Clipboard onClick={() => navigator.clipboard.writeText(episode.title)} />
+              <Clipboard
+                onClick={() => {
+                  navigator.clipboard.writeText(episode.title)
+                  toast({
+                    title: 'Copied Title',
+                  })
+                }}
+              />
             </Button>
           </div>
           <div className="flex items-center gap-2">
@@ -34,6 +46,9 @@ const Discord = ({ episode }: { episode: Episode }) => {
               variant="ghost"
               onClick={() => {
                 navigator.clipboard.writeText(liveLink)
+                toast({
+                  title: 'Copied location',
+                })
               }}
             >
               <Clipboard />

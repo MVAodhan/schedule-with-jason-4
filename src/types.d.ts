@@ -13,6 +13,7 @@ export interface Episode extends RecordModel {
   ninety_minute_tweet?: boolean
   discord?: boolean
   live_tweet?: boolean
+  youtube_link: string
   links?: []
   tags?: []
 }

@@ -6,7 +6,6 @@ import { Textarea } from './ui/textarea'
 import { Clipboard } from 'lucide-react'
 import { Button } from './ui/button'
 import { useRef, useState } from 'react'
-import { Input } from './ui/input'
 import { Checkbox } from './ui/checkbox'
 import { liveTweet, ninetyMinuteTweet, returnPSTDate, twoWeekTweet } from '@/lib/utils'
 import { toast } from '@/hooks/use-toast'
@@ -15,7 +14,6 @@ import Title from './title'
 
 const Buffer = ({ episode }: { episode: Episode }) => {
   const bufferDescRef = useRef<HTMLTextAreaElement>(null)
-  const [ytLiveLinkDefault, setYtLiveLinkDefault] = useState('')
 
   const [twTweet, setTwTweet] = useState(false)
   const [nmTweet, setNmTweet] = useState(false)
@@ -23,7 +21,6 @@ const Buffer = ({ episode }: { episode: Episode }) => {
 
   const updateBufferStatuses = async () => {
     await pb.collection('episodes').update(episode!.id, {
-      youtube_link: ytLiveLinkDefault,
       scheduled_tweet: twTweet,
       ninety_minute_tweet: nmTweet,
       live_tweet: lTweet,
@@ -55,17 +52,14 @@ const Buffer = ({ episode }: { episode: Episode }) => {
               <Clipboard />
             </Button>
           </div>
-          <div className="w-full">
-            <div>Youtube Link</div>
-            <Input onChange={(e) => setYtLiveLinkDefault(e.target.value)} />
-          </div>
-          {ytLiveLinkDefault.length > 0 ? (
+
+          {episode.youtube_link && (
             <div className="grid grid-cols-3 gap-5 py-5">
               <div className="flex flex-col justify-center gap-2">
                 <Button
                   onClick={() => {
                     navigator.clipboard.writeText(
-                      twoWeekTweet(episode.description, ytLiveLinkDefault),
+                      twoWeekTweet(episode.description, episode.youtube_link),
                     )
                     toast({
                       title: 'Copied Two Week Tweet',
@@ -83,7 +77,7 @@ const Buffer = ({ episode }: { episode: Episode }) => {
                 <Button
                   onClick={() => {
                     navigator.clipboard.writeText(
-                      ninetyMinuteTweet(episode.description, ytLiveLinkDefault),
+                      ninetyMinuteTweet(episode.description, episode.youtube_link),
                     )
                     toast({
                       title: 'Copied Ninety Minute Tweet',
@@ -136,7 +130,7 @@ const Buffer = ({ episode }: { episode: Episode }) => {
                 Update buffer status
               </Button>
             </div>
-          ) : null}
+          )}
         </div>
       </CardContent>
     </Card>

@@ -7,9 +7,21 @@ import { Card, CardContent, CardHeader } from './ui/card'
 import { useState } from 'react'
 import { Checkbox } from './ui/checkbox'
 import Title from './title'
+import { useToast } from '@/hooks/use-toast'
+import { pb } from '@/lib/pocketbase'
 
 const Caldendar = ({ episode }: { episode: Episode }) => {
   const [calendarScheduled, setCalendarScheduled] = useState<boolean>(false)
+  const { toast } = useToast()
+
+  const updateCalendar = async () => {
+    await pb.collection('episode').update(episode!.id, {
+      calendar: calendarScheduled,
+    })
+    toast({
+      title: 'Updated Calendar Status',
+    })
+  }
   return (
     <Card>
       <CardHeader>
@@ -19,8 +31,16 @@ const Caldendar = ({ episode }: { episode: Episode }) => {
         <div className="grid grid-cols-2 gap-2 pt-2">
           <div className="col-span-2 flex justify-center">
             <div className="">{`LWJ: ${episode.title}`}</div>
-            <Button variant="ghost">
-              <Clipboard onClick={() => navigator.clipboard.writeText(`LWJ: ${episode.title}`)} />
+            <Button
+              variant="ghost"
+              onClick={() => {
+                navigator.clipboard.writeText(`LWJ: ${episode.title}`)
+                toast({
+                  title: 'Copied Calendar Title',
+                })
+              }}
+            >
+              <Clipboard />
             </Button>
           </div>
 
@@ -39,11 +59,14 @@ const Caldendar = ({ episode }: { episode: Episode }) => {
               <div className="">Invite</div>
               <Button
                 variant="ghost"
-                onClick={() =>
+                onClick={() => {
                   navigator.clipboard.writeText(
                     'lengstorf.com_9plj1m6u9vtddldoinl0hs2vgk@group.calendar.google.com',
                   )
-                }
+                  toast({
+                    title: 'Copied Invite',
+                  })
+                }}
               >
                 <Clipboard />
               </Button>
@@ -54,6 +77,9 @@ const Caldendar = ({ episode }: { episode: Episode }) => {
                 variant="ghost"
                 onClick={() => {
                   navigator.clipboard.writeText(liveLink)
+                  toast({
+                    title: 'Copied location',
+                  })
                 }}
               >
                 <Clipboard />
@@ -70,6 +96,9 @@ const Caldendar = ({ episode }: { episode: Episode }) => {
                 variant="ghost"
                 onClick={() => {
                   navigator.clipboard.writeText(episode.description)
+                  toast({
+                    title: 'Copied description',
+                  })
                 }}
               >
                 <Clipboard />
@@ -83,7 +112,13 @@ const Caldendar = ({ episode }: { episode: Episode }) => {
                   onCheckedChange={() => setCalendarScheduled((prev) => !prev)}
                 />
               </div>
-              <Button>Update calendar status</Button>
+              <Button
+                onClick={() => {
+                  updateCalendar()
+                }}
+              >
+                Update calendar status
+              </Button>
             </div>
           </div>
         </div>

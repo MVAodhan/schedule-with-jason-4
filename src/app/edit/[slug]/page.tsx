@@ -21,6 +21,7 @@ import CopyText from '@/components/copy-text'
 import Discord from '@/components/discord'
 import Title from '@/components/title'
 import { useRouter } from 'next/navigation'
+import Streamyard from '@/components/streamyard'
 
 const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
   const [slug, setSlug] = useState<string>('')
@@ -86,6 +87,7 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
         <Tabs defaultValue="edit" className="w-[600px] ">
           <TabsList className="flex bg-transparent">
             <TabsTrigger value="edit">Edit</TabsTrigger>
+            <TabsTrigger value="streamyard">Streamyard</TabsTrigger>
             <TabsTrigger value="website">Website</TabsTrigger>
             <TabsTrigger value="calendar">Calendar</TabsTrigger>
             <TabsTrigger value="buffer">Buffer</TabsTrigger>
@@ -98,6 +100,9 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
           </TabsContent>
           <TabsContent value="website">
             <Website episode={episode} />
+          </TabsContent>
+          <TabsContent value="streamyard">
+            <Streamyard episode={episode} />
           </TabsContent>
           <TabsContent value="calendar">
             <Caldendar episode={episode} />
