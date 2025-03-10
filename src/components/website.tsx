@@ -8,12 +8,21 @@ import { Button } from './ui/button'
 import { pb } from '@/lib/pocketbase'
 import { toast } from '@/hooks/use-toast'
 import Title from './title'
+import { Input } from './ui/input'
+import { Clipboard } from 'lucide-react'
 
 const Website = ({ episode }: { episode: Episode }) => {
-  const [websiteScheduled, setWebsiteScheduled] = useState<boolean>(false)
+  const [websiteScheduled, setWebsiteScheduled] = useState<boolean>(
+    episode.website ? episode.website : false,
+  )
 
   const updateWebsiteStatus = async () => {
     await pb.collection('episodes').update(episode.id, { website: websiteScheduled })
+  }
+
+  const returnID = () => {
+    const segs = episode.youtube_link.split('=')
+    return segs[1]
   }
   return (
     <Card>
@@ -24,33 +33,47 @@ const Website = ({ episode }: { episode: Episode }) => {
         <div className="grid grid-cols-2 gap-2 mt-2">
           <div className="row-span-2 flex flex-col gap-2">
             <div>
-              <div className="font-semibold italic text-md"> Name</div>
+              <div className=" text-md"> Name</div>
               <div>{episode.guest_name}</div>
             </div>
             {episode.guest_twitter && (
               <div>
-                <div className="font-bold text-md">Twitter</div>
+                <div className=" text-md">Twitter</div>
                 <div>{episode.guest_twitter}</div>
               </div>
             )}
           </div>
 
           <div className="col-span-2">
-            <div className="font-semibold italic text-md">Description</div>
+            <div className=" text-md">Description</div>
             <Textarea defaultValue={episode.description} />
           </div>
           <div>
-            <div className="font-semibold italic text-md">NZ Date</div>
+            <div className="f text-md">NZ Date</div>
             <div>{returnNZSTString(episode.date)}</div>
           </div>
           <div>
-            <div className="font-semibold italic text-md">US Date</div>
+            <div className=" text-md">US Date</div>
             <div>{returnPSTString(episode.date)}</div>
+          </div>
+        </div>
+        <div className="w-full py-2">
+          <div>Youtube ID</div>
+          <div className="flex gap-2">
+            <Input defaultValue={returnID()} />
+            <Button
+              variant="ghost"
+              onClick={() => {
+                navigator.clipboard.writeText(returnID())
+              }}
+            >
+              <Clipboard />
+            </Button>
           </div>
         </div>
         <div className="mt-2 flex flex-col">
           <div>
-            <div>Scheduled</div>
+            <div>Entered in Sanity</div>
             <Checkbox
               defaultChecked={websiteScheduled}
               onCheckedChange={() => setWebsiteScheduled((prev) => !prev)}

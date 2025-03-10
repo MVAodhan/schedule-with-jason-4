@@ -11,7 +11,9 @@ import { useToast } from '@/hooks/use-toast'
 import { pb } from '@/lib/pocketbase'
 
 const Caldendar = ({ episode }: { episode: Episode }) => {
-  const [calendarScheduled, setCalendarScheduled] = useState<boolean>(false)
+  const [calendarScheduled, setCalendarScheduled] = useState<boolean>(
+    episode.website ? episode.website : false,
+  )
   const { toast } = useToast()
 
   const updateCalendar = async () => {
