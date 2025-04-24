@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Episode } from "@/types";
 
-import { returnNZSTString, returnPSTDate, returnPSTString } from "@/lib/utils";
+import { returnNZSTString, returnPSTString } from "@/lib/utils";
 import { Textarea } from "./ui/textarea";
 import { DatePicker } from "./date-picker";
 import {
@@ -20,6 +20,7 @@ import {
 import { Switch } from "./ui/switch";
 import { DateTime } from "luxon";
 import { pb } from "@/lib/pocketbase";
+import { redirect } from "next/navigation";
 
 const Edit = ({ episode }: { episode: Episode }) => {
   const titleRef = useRef<HTMLInputElement | null>(null);
@@ -52,9 +53,10 @@ const Edit = ({ episode }: { episode: Episode }) => {
   };
 
   const updateEpisode = async (date: string) => {
-    const record = await pb.collection("reccuring").update(episode.id, {
+    await pb.collection("reccuring").update(episode.id, {
       date: date,
     });
+    redirect("/");
   };
 
   useEffect(() => {
@@ -127,7 +129,7 @@ const Edit = ({ episode }: { episode: Episode }) => {
                 <Switch
                   id="date-edit"
                   checked={editDate}
-                  onCheckedChange={(e) => {
+                  onCheckedChange={() => {
                     setEditDate((prev) => !prev);
                   }}
                 />
