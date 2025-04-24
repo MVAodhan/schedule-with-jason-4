@@ -1,32 +1,32 @@
-'use client'
+"use client";
 
-import React, { useEffect, useRef } from 'react'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Episode } from '@/types'
+import { useEffect, useRef } from "react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Episode } from "@/types";
 
-import { returnNZSTString, returnPSTString } from '@/lib/utils'
-import { Textarea } from './ui/textarea'
+import { returnNZSTString, returnPSTString } from "@/lib/utils";
+import { Textarea } from "./ui/textarea";
 
 const Edit = ({ episode }: { episode: Episode }) => {
-  const titleRef = useRef<HTMLInputElement | null>(null)
+  const titleRef = useRef<HTMLInputElement | null>(null);
 
-  const descriptionRef = useRef<HTMLTextAreaElement | null>(null)
-  const guestNameRef = useRef<HTMLInputElement | null>(null)
-  const guestTwitterRef = useRef<HTMLInputElement | null>(null)
+  const descriptionRef = useRef<HTMLTextAreaElement | null>(null);
+  const guestNameRef = useRef<HTMLInputElement | null>(null);
+  const guestTwitterRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    titleRef.current!.value = episode.title
+    titleRef.current!.value = episode.title;
 
-    descriptionRef.current!.value = episode.description
-    guestNameRef.current!.value = episode.guest_name
+    descriptionRef.current!.value = episode.description;
+    guestNameRef.current!.value = episode.guest_name;
     if (episode.guest_twitter) {
-      guestTwitterRef.current!.value = episode.guest_twitter
+      guestTwitterRef.current!.value = episode.guest_twitter;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
   return (
     <Card className="w-full max-w-2xl mx-auto">
@@ -40,7 +40,12 @@ const Edit = ({ episode }: { episode: Episode }) => {
               <Label htmlFor="title" className="text-md font-bold">
                 Title
               </Label>
-              <Input id="title" ref={titleRef} placeholder="Episode title" className="w-full" />
+              <Input
+                id="title"
+                ref={titleRef}
+                placeholder="Episode title"
+                className="w-full"
+              />
             </div>
 
             <div className="space-y-2">
@@ -104,7 +109,7 @@ const Edit = ({ episode }: { episode: Episode }) => {
         </div>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
-export default Edit
+export default Edit;

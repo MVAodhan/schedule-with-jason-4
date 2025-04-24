@@ -35,7 +35,7 @@ const Edit = ({ episode }: { episode: Episode }) => {
     )
   );
   const [time, setTime] = useState<string>("");
-  const [editDate, setEditDate] = useState<boolean>(true);
+  const [editDate, setEditDate] = useState<boolean>(false);
 
   const createUTCString = (date: Date, time: string) => {
     // Takes Date from the DatePick and Makes it into a PST Date
@@ -133,8 +133,10 @@ const Edit = ({ episode }: { episode: Episode }) => {
                     setEditDate((prev) => !prev);
                   }}
                 />
-                <Label htmlFor="date-edit"> Edit Date</Label>
-                <span className="text-xs italic">Enter as PST Time</span>
+                <div className="flex flex-col gap-2 pt-2">
+                  <Label htmlFor="date-edit"> Edit Date</Label>
+                  <span className="text-xs italic">Enter as PST Time</span>
+                </div>
               </div>
             </div>
             {editDate && (
