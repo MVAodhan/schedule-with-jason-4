@@ -22,6 +22,7 @@ import {
 import { TaskCompletionTicks } from "@/components/checks";
 import { useRouter } from "next/navigation";
 import { DateTime } from "luxon";
+import { EpisodeTasks } from "@/components/episode-checks";
 
 export default function Home() {
   const getUser = useStore((state) => state.getUser);
@@ -244,6 +245,7 @@ export default function Home() {
                   </span>
                 </div>
               </div>
+              <EpisodeTasks episode={episode} />
             </CardContent>
           </Card>
         ))}
