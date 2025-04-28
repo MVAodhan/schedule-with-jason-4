@@ -9,20 +9,25 @@ import { Checkbox } from "./ui/checkbox";
 import Title from "./title";
 import { useToast } from "@/hooks/use-toast";
 import { pb } from "@/lib/pocketbase";
+import { useRouter } from "next/navigation";
 
 const Caldendar = ({ episode }: { episode: Episode }) => {
   const [calendarScheduled, setCalendarScheduled] = useState<boolean>(
-    episode.website ? episode.website : false
+    episode.calendar ? episode.calendar : false
   );
   const { toast } = useToast();
 
+  const router = useRouter();
+
   const updateCalendar = async () => {
-    await pb.collection("episode").update(episode!.id, {
+    await pb.collection("reccuring").update(episode!.id, {
       calendar: calendarScheduled,
     });
     toast({
       title: "Updated Calendar Status",
     });
+
+    router.refresh();
   };
   return (
     <Card>

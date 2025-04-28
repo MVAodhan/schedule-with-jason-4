@@ -6,27 +6,17 @@ import { Episode } from "@/types";
 import { useEffect, useRef, useState } from "react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import LinkList from "@/components/link-list";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Plus, Save } from "lucide-react";
-import { Input } from "@/components/ui/input";
+
 import { useChapterStore, useLinkStore } from "@/lib/zustand-stores";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import Caldendar from "@/components/caldendar";
-import Buffer from "@/components/buffer";
-import Website from "@/components/website";
-import CopyText from "@/components/copy-text";
-import Discord from "@/components/discord";
-import Title from "@/components/title";
+
+import Caldendar from "@/components/caldendar-recurring";
+import Buffer from "@/components/buffer-recurring";
+
+import CopyText from "@/components/copy-text-recurring";
+import Discord from "@/components/discord-recurring";
+
 import { useRouter } from "next/navigation";
-import Streamyard from "@/components/streamyard";
+import Streamyard from "@/components/streamyard-recurring";
 
 const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
   const [slug, setSlug] = useState<string>("");
@@ -105,9 +95,6 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
           <TabsContent value="edit">
             <Edit episode={episode} />
           </TabsContent>
-          <TabsContent value="website">
-            <Website episode={episode} />
-          </TabsContent>
           <TabsContent value="streamyard">
             <Streamyard episode={episode} />
           </TabsContent>
@@ -116,52 +103,6 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
           </TabsContent>
           <TabsContent value="buffer">
             <Buffer episode={episode} />
-          </TabsContent>
-          <TabsContent value="links">
-            <Card>
-              <CardHeader>
-                <Title episode={episode} />
-                <Label>Chapters</Label>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-5">
-                <Textarea ref={chaptersRef} defaultValue={episode.chapters} />
-                <Button onClick={() => saveChapters()}>Save Chapters</Button>
-              </CardContent>
-            </Card>
-            <div className="w-full grid grid-cols-2">
-              <LinkList />
-              <Card>
-                <CardContent>
-                  <div className="flex flex-col gap-2 pt-2">
-                    <Input placeholder="label" ref={labelRef} />
-                    <Input placeholder="value" ref={valueRef} />
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <div className="flex flex-col gap-2 w-full">
-                    <Button
-                      className="w-full"
-                      variant="outline"
-                      onClick={() => {
-                        addLink(
-                          labelRef.current!.value,
-                          valueRef.current!.value
-                        );
-                        labelRef.current!.value = "";
-                        valueRef.current!.value = "";
-                      }}
-                    >
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Link
-                    </Button>
-                    <Button onClick={saveLinks}>
-                      <Save className="h-4 w-4 mr-2" />
-                      Save Links
-                    </Button>
-                  </div>
-                </CardFooter>
-              </Card>
-            </div>
           </TabsContent>
           <TabsContent value="copy-btns">
             <CopyText episode={episode} links={episode.links} />
