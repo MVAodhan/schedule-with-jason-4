@@ -3,11 +3,11 @@
 import Edit from "@/components/edit-episode-reccuring";
 import { pb } from "@/lib/pocketbase";
 import { Episode } from "@/types";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-import { useChapterStore, useLinkStore } from "@/lib/zustand-stores";
+import { useLinkStore } from "@/lib/zustand-stores";
 
 import Caldendar from "@/components/caldendar-recurring";
 import Buffer from "@/components/buffer-recurring";
@@ -15,23 +15,13 @@ import Buffer from "@/components/buffer-recurring";
 import CopyText from "@/components/copy-text-recurring";
 import Discord from "@/components/discord-recurring";
 
-import { useRouter } from "next/navigation";
 import Streamyard from "@/components/streamyard-recurring";
 
 const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
   const [slug, setSlug] = useState<string>("");
   const [episode, setEpisode] = useState<Episode | null>(null);
 
-  const addLink = useLinkStore((state) => state.addLink);
-  const links = useLinkStore((state) => state.links);
   const setLinks = useLinkStore((state) => state.setLinks);
-  const setChapters = useChapterStore((state) => state.setChapters);
-
-  const chaptersRef = useRef<HTMLTextAreaElement | null>(null);
-  const labelRef = useRef<HTMLInputElement | null>(null);
-  const valueRef = useRef<HTMLInputElement | null>(null);
-
-  const router = useRouter();
 
   const getSlug = async () => {
     const slug = (await params).slug;
@@ -44,22 +34,6 @@ const Page = ({ params }: { params: Promise<{ slug: string }> }) => {
       .collection("reccuring")
       .getFirstListItem(`slug="${slug}"`)) as unknown as Episode;
     setEpisode(episode);
-  };
-
-  const saveLinks = async () => {
-    console.log(episode?.id);
-    await pb
-      .collection("episodes")
-      .update(episode!.id, { links: JSON.stringify(links) });
-    router.push("/");
-  };
-  const saveChapters = async () => {
-    setChapters(chaptersRef.current!.value);
-    await pb
-      .collection("episodes")
-      .update(episode!.id, { chapters: chaptersRef.current?.value });
-
-    router.push("/");
   };
 
   useEffect(() => {

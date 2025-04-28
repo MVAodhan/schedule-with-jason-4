@@ -1,32 +1,42 @@
-import React, { useEffect, useRef } from 'react'
-import { Button } from './ui/button'
-import { Card, CardContent, CardHeader } from './ui/card'
-import { captionsBlurb, generateYoutubeDescription, getHighlightText } from '@/lib/utils'
-import { Episode, ListLink } from '@/types'
+import React, { useEffect, useRef } from "react";
+import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader } from "./ui/card";
+import {
+  captionsBlurb,
+  generateYoutubeDescription,
+  getHighlightText,
+} from "@/lib/utils";
+import { Episode, ListLink } from "@/types";
 
-import Title from './title'
-import { Textarea } from './ui/textarea'
+import Title from "./title";
+import { Textarea } from "./ui/textarea";
 
-const CopyText = ({ episode, links }: { episode: Episode; links?: ListLink[] }) => {
+const CopyText = ({
+  episode,
+  links,
+}: {
+  episode: Episode;
+  links?: ListLink[];
+}) => {
   const formatTags = (tags: string) => {
-    const tagsArr = JSON.parse(tags)
-    const formattedTags = tagsArr.join(',')
+    const tagsArr = JSON.parse(tags);
+    const formattedTags = tagsArr.join(",");
 
-    return formattedTags
-  }
+    return formattedTags;
+  };
 
-  const techRef = useRef<HTMLTextAreaElement | null>(null)
+  const techRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
     const tweet = getHighlightText(
-      '<TECHNOLOGY>',
+      "<TECHNOLOGY>",
       episode.slug,
       episode.guest_twitter,
-      episode.guest_name,
-    )
+      episode.guest_name
+    );
 
-    techRef.current!.value = tweet
-  }, [])
+    techRef.current!.value = tweet;
+  });
 
   return (
     <Card>
@@ -38,7 +48,9 @@ const CopyText = ({ episode, links }: { episode: Episode; links?: ListLink[] }) 
           {links && (
             <Button
               onClick={() =>
-                navigator.clipboard.writeText(generateYoutubeDescription(episode, links))
+                navigator.clipboard.writeText(
+                  generateYoutubeDescription(episode, links)
+                )
               }
             >
               Youtube Description
@@ -50,8 +62,8 @@ const CopyText = ({ episode, links }: { episode: Episode; links?: ListLink[] }) 
           {episode.tags && (
             <Button
               onClick={() => {
-                const formattedTags = formatTags(JSON.stringify(episode.tags))
-                navigator.clipboard.writeText(formattedTags!)
+                const formattedTags = formatTags(JSON.stringify(episode.tags));
+                navigator.clipboard.writeText(formattedTags!);
               }}
             >
               Copy Tags
@@ -66,7 +78,7 @@ const CopyText = ({ episode, links }: { episode: Episode; links?: ListLink[] }) 
             ></Textarea>
             <Button
               onClick={() => {
-                navigator.clipboard.writeText(techRef.current!.value)
+                navigator.clipboard.writeText(techRef.current!.value);
               }}
             >
               Copy Tweet
@@ -91,7 +103,7 @@ const CopyText = ({ episode, links }: { episode: Episode; links?: ListLink[] }) 
         </div>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
-export default CopyText
+export default CopyText;
