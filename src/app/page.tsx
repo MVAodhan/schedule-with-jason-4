@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { pb } from "@/lib/pocketbase";
 import { returnNZSTString, returnPSTString } from "@/lib/utils";
-import { useStore } from "@/lib/zustand-stores";
 import { Episode } from "@/types";
 import { Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
@@ -25,7 +24,6 @@ import { DateTime } from "luxon";
 import { EpisodeTasks } from "@/components/episode-checks";
 
 export default function Home() {
-  const getUser = useStore((state) => state.getUser);
   const [episodes, setEpisodes] = useState<Episode[] | null>(null);
   const [reccuring, setReccuring] = useState<Episode | null>(null);
 
@@ -48,7 +46,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    getUser();
     getEpisodes();
     getReccuring();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -70,13 +67,14 @@ export default function Home() {
   };
 
   const resetEpisode = async () => {
+    const resetUTCDate = createUTCString("01-01-2025 9:00");
     await pb.collection("reccuring").update(reccuring!.id, {
       calendar: false,
       scheduled_tweet: false,
       ninety_minute_tweet: false,
       live_tweet: false,
       discord: false,
-      date: createUTCString("01-01-2025 9:00"),
+      date: resetUTCDate,
     });
 
     router.refresh();

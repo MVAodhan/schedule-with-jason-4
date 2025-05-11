@@ -1,27 +1,27 @@
-import React, { useState } from 'react'
-import { Card, CardContent } from './ui/card'
-import { Button } from './ui/button'
-import { liveLink, returnNZSTString } from '@/lib/utils'
-import { Clipboard } from 'lucide-react'
-import { Episode } from '@/types'
-import { Label } from '@radix-ui/react-label'
-import { Textarea } from './ui/textarea'
-import { Checkbox } from './ui/checkbox'
-import { pb } from '@/lib/pocketbase'
-import { useToast } from '@/hooks/use-toast'
+import React, { useState } from "react";
+import { Card, CardContent } from "./ui/card";
+import { Button } from "./ui/button";
+import { liveLink, returnNZSTString } from "@/lib/utils";
+import { Clipboard } from "lucide-react";
+import { Episode } from "@/types";
+import { Label } from "@radix-ui/react-label";
+import { Textarea } from "./ui/textarea";
+import { Checkbox } from "./ui/checkbox";
+import { pb } from "@/lib/pocketbase";
+import { useToast } from "@/hooks/use-toast";
 
 const Discord = ({ episode }: { episode: Episode }) => {
-  const { toast } = useToast()
-  const [discordChecked, setDiscordChecked] = useState(false)
+  const { toast } = useToast();
+  const [discordChecked, setDiscordChecked] = useState(episode.discord);
 
   const updateDiscordStatus = async () => {
-    await pb.collection('episodes').update(episode!.id, {
+    await pb.collection("episodes").update(episode!.id, {
       discord: discordChecked,
-    })
+    });
     toast({
-      title: 'Updated Discord Status',
-    })
-  }
+      title: "Updated Discord Status",
+    });
+  };
 
   return (
     <Card>
@@ -32,10 +32,10 @@ const Discord = ({ episode }: { episode: Episode }) => {
             <Button variant="ghost">
               <Clipboard
                 onClick={() => {
-                  navigator.clipboard.writeText(episode.title)
+                  navigator.clipboard.writeText(episode.title);
                   toast({
-                    title: 'Copied Title',
-                  })
+                    title: "Copied Title",
+                  });
                 }}
               />
             </Button>
@@ -45,10 +45,10 @@ const Discord = ({ episode }: { episode: Episode }) => {
             <Button
               variant="ghost"
               onClick={() => {
-                navigator.clipboard.writeText(liveLink)
+                navigator.clipboard.writeText(liveLink);
                 toast({
-                  title: 'Copied location',
-                })
+                  title: "Copied location",
+                });
               }}
             >
               <Clipboard />
@@ -77,7 +77,7 @@ const Discord = ({ episode }: { episode: Episode }) => {
         </div>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
-export default Discord
+export default Discord;

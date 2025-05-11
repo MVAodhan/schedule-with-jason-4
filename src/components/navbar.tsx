@@ -1,21 +1,29 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react'
-import { Menu, X } from 'lucide-react'
+import React, { useEffect, useState } from "react";
+import { Menu, X } from "lucide-react";
 
-import Link from 'next/link'
-import { useStore } from '@/lib/zustand-stores'
-import { Button } from './ui/button'
-import { useRouter } from 'next/navigation'
+import Link from "next/link";
+import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
+
+import { useStore } from "@/lib/zustand-stores";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false)
-  const user = useStore((state) => state.user)
-  const signOut = useStore((state) => state.signOut)
-  const router = useRouter()
+  const [isOpen, setIsOpen] = useState(false);
+  const getUser = useStore((state) => state.getUser);
+  const signOut = useStore((state) => state.signOut);
 
-  const navigation = [{ name: 'Home', href: '/' }]
-  const userNavigation = [{ name: 'New', href: '/new' }]
+  const user = useStore((state) => state.user);
+
+  const router = useRouter();
+
+  const navigation = [{ name: "Home", href: "/" }];
+  const userNavigation = [{ name: "New", href: "/new" }];
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <nav className="bg-white shadow-lg">
@@ -51,7 +59,10 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-4">
             {navigation.map((item) => (
               <div key={item.name} className="relative">
-                <Link href={item.href} className="px-3 py-2 text-gray-700 hover:text-gray-900">
+                <Link
+                  href={item.href}
+                  className="px-3 py-2 text-gray-700 hover:text-gray-900"
+                >
                   {item.name}
                 </Link>
               </div>
@@ -72,14 +83,14 @@ const Navbar = () => {
             {user ? (
               <Button
                 onClick={() => {
-                  signOut()
-                  router.push('/')
+                  signOut();
+                  router.push("/");
                 }}
               >
                 Sign out
               </Button>
             ) : (
-              <Link href={'/login'}>
+              <Link href={"/login"}>
                 <Button>Login</Button>
               </Link>
             )}
@@ -91,14 +102,18 @@ const Navbar = () => {
               onClick={() => setIsOpen(!isOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none"
             >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </button>
           </div>
         </div>
       </div>
 
       {/* Mobile menu */}
-      <div className={`md:hidden ${isOpen ? 'block' : 'hidden'}`}>
+      <div className={`md:hidden ${isOpen ? "block" : "hidden"}`}>
         <div className="px-2 pt-2 pb-3 space-y-1">
           {navigation.map((item) => (
             <div key={item.name}>
@@ -113,7 +128,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
