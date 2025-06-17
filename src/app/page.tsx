@@ -75,6 +75,7 @@ export default function Home() {
       live_tweet: false,
       discord: false,
       date: resetUTCDate,
+      youtube_link: null,
     });
 
     router.refresh();

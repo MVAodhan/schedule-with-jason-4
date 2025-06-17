@@ -8,6 +8,7 @@ import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 
 import { useStore } from "@/lib/zustand-stores";
+import { pb } from "@/lib/pocketbase";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,7 +23,9 @@ const Navbar = () => {
   const userNavigation = [{ name: "New", href: "/new" }];
 
   useEffect(() => {
-    getUser();
+    if (pb.authStore.record) {
+      getUser();
+    }
   }, []);
 
   return (
