@@ -1,63 +1,69 @@
-'use client'
+"use client";
 
-import React, { useRef, useState } from 'react'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
-import { DatePicker } from './date-picker'
+import React, { useRef, useState } from "react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import { DatePicker } from "./date-picker";
 
-import { DateTime } from 'luxon'
+import { DateTime } from "luxon";
 
-import { pb } from '@/lib/pocketbase'
-import { slugify } from '@/lib/utils'
-import { Badge } from './ui/badge'
+import { pb } from "@/lib/pocketbase";
+import { slugify } from "@/lib/utils";
+import { Badge } from "./ui/badge";
 
 const NewEpisode = () => {
-  const titleRef = useRef<HTMLInputElement | null>(null)
+  const titleRef = useRef<HTMLInputElement | null>(null);
 
   // const [tags, setTags] = useState<string[]>([])
-  const [date, setDate] = useState<Date | undefined>(new Date())
-  const [time, setTime] = useState<string>('')
-  const [tags, setTags] = useState<string[]>()
+  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [time, setTime] = useState<string>("");
+  const [tags, setTags] = useState<string[]>();
 
-  const descriptionRef = useRef<HTMLInputElement | null>(null)
-  const guestNameRef = useRef<HTMLInputElement | null>(null)
-  const guestTwitterRef = useRef<HTMLInputElement | null>(null)
-  const tagsRef = useRef<HTMLInputElement | null>(null)
+  const descriptionRef = useRef<HTMLInputElement | null>(null);
+  const guestNameRef = useRef<HTMLInputElement | null>(null);
+  const guestTwitterRef = useRef<HTMLInputElement | null>(null);
+  const tagsRef = useRef<HTMLInputElement | null>(null);
 
   const createNewEpisode = async () => {
-    if (!time || tags === undefined) {
-      alert('Please make sure to select a time and add tags')
-      return
+    if (!time) {
+      alert("Please make sure to select a time ");
+      return;
     }
-    const utc = createUTCString(date!, time)
-    const slug = slugify(titleRef.current!.value)
-    await pb.collection('episodes').create({
+    const utc = createUTCString(date!, time);
+    const slug = slugify(titleRef.current!.value);
+    await pb.collection("episodes").create({
       title: titleRef.current?.value,
       slug: slug,
       date: utc,
       description: descriptionRef.current?.value,
       guest_name: guestNameRef.current?.value,
       tags: tags,
-    })
-  }
+    });
+  };
 
   const createUTCString = (date: Date, time: string) => {
     // Takes Date from the DatePick and Makes it into a PST Date
     const dateObj = DateTime.fromFormat(
-      `${date.toLocaleDateString().replaceAll('/', '-')} ${time}`,
-      'dd-MM-yyyy H:mm',
+      `${date.toLocaleDateString().replaceAll("/", "-")} ${time}`,
+      "dd-MM-yyyy H:mm",
       {
-        zone: 'America/Los_Angeles',
-      },
-    ).toJSDate()
+        zone: "America/Los_Angeles",
+      }
+    ).toJSDate();
 
     // Converts PST date to UTC string
-    const ustDate = dateObj.toISOString()
-    return ustDate
-  }
+    const ustDate = dateObj.toISOString();
+    return ustDate;
+  };
 
   return (
     <Card className="w-full max-w-2xl mx-auto">
@@ -71,7 +77,12 @@ const NewEpisode = () => {
               <Label htmlFor="title" className="text-md font-bold">
                 Title
               </Label>
-              <Input id="title" ref={titleRef} placeholder="Episode title" className="w-full" />
+              <Input
+                id="title"
+                ref={titleRef}
+                placeholder="Episode title"
+                className="w-full"
+              />
             </div>
 
             <div className="space-y-2">
@@ -96,7 +107,7 @@ const NewEpisode = () => {
                 <Label className="text-md font-bold">Time</Label>
                 <Select
                   onValueChange={(e) => {
-                    setTime(e)
+                    setTime(e);
                   }}
                 >
                   <SelectTrigger className="w-[180px]">
@@ -144,29 +155,34 @@ const NewEpisode = () => {
             <Button
               onClick={() => {
                 setTags((prev) => {
-                  const tag = tagsRef.current!.value
+                  const tag = tagsRef.current!.value;
                   if (prev != null) {
-                    return [...prev, tag]
+                    return [...prev, tag];
                   }
-                  return [tag]
-                })
-                tagsRef.current!.value = ''
+                  return [tag];
+                });
+                tagsRef.current!.value = "";
               }}
             >
               Add Tag
             </Button>
             <div className="flex gap-1">
-              {tags && tags.map((tag: string, i) => <Badge key={i}>{tag}</Badge>)}
+              {tags &&
+                tags.map((tag: string, i) => <Badge key={i}>{tag}</Badge>)}
             </div>
           </div>
 
-          <Button type="submit" className="w-full" onClick={() => createNewEpisode()}>
+          <Button
+            type="submit"
+            className="w-full"
+            onClick={() => createNewEpisode()}
+          >
             Create New Episode
           </Button>
         </div>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
-export default NewEpisode
+export default NewEpisode;

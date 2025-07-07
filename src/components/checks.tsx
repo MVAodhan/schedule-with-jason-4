@@ -29,7 +29,10 @@ export const TaskCompletionTicks = ({ episode }: { episode: Episode }) => (
       <span className="text-xs font-medium text-gray-600 mb-1">Buffer</span>
       {episode.live_tweet &&
         episode.ninety_minute_tweet &&
-        episode.scheduled_tweet && (
+        episode.scheduled_tweet &&
+        episode.live_tweet_bs &&
+        episode.ninety_minute_tweet_bs &&
+        episode.scheduled_tweet_bs && (
           <div className="flex items-center justify-center p-1 rounded-full bg-green-100">
             <svg
               xmlns="http://www.w3.org/2000/svg"
