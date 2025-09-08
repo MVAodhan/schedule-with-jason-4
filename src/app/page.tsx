@@ -73,6 +73,27 @@ export default function Home() {
       scheduled_tweet: false,
       ninety_minute_tweet: false,
       live_tweet: false,
+      cheduled_tweet_bs: false,
+      ninety_minute_tweet_bs: false,
+      live_tweet_bs: false,
+      discord: false,
+      date: resetUTCDate,
+      youtube_link: null,
+    });
+
+    router.refresh();
+  };
+  const resetUnique = async (episode: Episode) => {
+    const resetUTCDate = createUTCString("01-01-2025 9:00");
+    await pb.collection("episodes").update(episode.id, {
+      website: false,
+      calendar: false,
+      scheduled_tweet: false,
+      ninety_minute_tweet: false,
+      live_tweet: false,
+      scheduled_tweet_bs: false,
+      ninety_minute_tweet_bs: false,
+      live_tweet_bs: false,
       discord: false,
       date: resetUTCDate,
       youtube_link: null,
@@ -225,6 +246,49 @@ export default function Home() {
                           onClick={() => deleteEpisode(episode.id)}
                         >
                           Delete
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                  <Dialog>
+                    <DialogTrigger>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-6 h-6 text-gray-700" // Tailwind classes applied directly
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+                        />
+                      </svg>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>
+                          <div className="flex flex-col gap-2">
+                            <span className="text-orange-500">Reset</span>
+                          </div>
+                        </DialogTitle>
+                        <DialogDescription>
+                          This will reset {episode.title}
+                        </DialogDescription>
+                      </DialogHeader>
+                      <DialogFooter className="sm:justify-start">
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          className="bg-orange-500 hover:bg-orange-200 text-black"
+                          onClick={() => {
+                            resetUnique(episode);
+                          }}
+                        >
+                          Reset
                         </Button>
                       </DialogFooter>
                     </DialogContent>

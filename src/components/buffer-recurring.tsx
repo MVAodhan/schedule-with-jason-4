@@ -46,7 +46,7 @@ const Buffer = ({ episode }: { episode: Episode }) => {
       </CardHeader>
       <CardContent>
         <div className="flex flex-col py-2 gap-2">
-          <div>Buffer Description</div>
+          <div>Twitter Description</div>
           {episode.guest_twitter && (
             <Button
               variant="ghost"

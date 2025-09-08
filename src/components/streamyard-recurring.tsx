@@ -13,14 +13,17 @@ import { useRef } from "react";
 import { useRouter } from "next/navigation";
 
 const Streamyard = ({ episode }: { episode: Episode }) => {
+  console.log(episode.id);
   const ytLinkRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
   const updateYoutubeLink = async () => {
+    console.log(ytLinkRef.current?.value);
     if (ytLinkRef.current?.value !== null) {
-      await pb.collection("recurring").update(episode.id, {
+      const res = await pb.collection("reccuring").update(episode.id, {
         youtube_link: ytLinkRef.current!.value,
       });
 
+      console.log(res);
       router.push("/");
     }
   };
