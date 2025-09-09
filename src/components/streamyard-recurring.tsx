@@ -19,7 +19,7 @@ const Streamyard = ({ episode }: { episode: Episode }) => {
   const updateYoutubeLink = async () => {
     console.log(ytLinkRef.current?.value);
     if (ytLinkRef.current?.value !== null) {
-      const res = await pb.collection("reccuring").update(episode.id, {
+      await pb.collection("reccuring").update(episode.id, {
         youtube_link: ytLinkRef.current!.value,
       });
 
