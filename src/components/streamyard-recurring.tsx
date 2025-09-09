@@ -23,7 +23,6 @@ const Streamyard = ({ episode }: { episode: Episode }) => {
         youtube_link: ytLinkRef.current!.value,
       });
 
-      console.log(res);
       router.push("/");
     }
   };
