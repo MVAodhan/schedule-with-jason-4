@@ -79,11 +79,18 @@ const Buffer = ({ episode }: { episode: Episode }) => {
                 <div className="flex flex-col justify-center gap-2 ">
                   <Button
                     onClick={() => {
-                      navigator.clipboard.writeText(
-                        twoWeekTweet(episode.description, episode.youtube_link)
+                      const tw = twoWeekTweet(
+                        episode.description,
+                        episode.youtube_link
                       );
+                      const replaced = tw.replace(
+                        "Jason Lengstorf",
+                        "@jlengstorf"
+                      );
+
+                      navigator.clipboard.writeText(replaced);
                       toast({
-                        title: "Copied Two Week Tweet",
+                        title: "Copied Twitter Two Weeks Tweet",
                       });
                     }}
                   >
@@ -97,14 +104,18 @@ const Buffer = ({ episode }: { episode: Episode }) => {
                 <div className="flex flex-col justify-center gap-2">
                   <Button
                     onClick={() => {
-                      navigator.clipboard.writeText(
-                        ninetyMinuteTweet(
-                          episode.description,
-                          episode.youtube_link
-                        )
+                      const tw = ninetyMinuteTweet(
+                        episode.description,
+                        episode.youtube_link
                       );
+                      const replaced = tw.replace(
+                        "Jason Lengstorf",
+                        "@jlengstorf"
+                      );
+
+                      navigator.clipboard.writeText(replaced);
                       toast({
-                        title: "Copied Ninety Minute Tweet",
+                        title: "Copied Twitter Ninety minute Tweet",
                       });
                     }}
                   >
@@ -118,11 +129,18 @@ const Buffer = ({ episode }: { episode: Episode }) => {
                 <div className="flex flex-col justify-center gap-2 ">
                   <Button
                     onClick={() => {
-                      navigator.clipboard.writeText(
-                        liveTweet(episode.description)
+                      const tw = liveTweet(
+                        episode.description,
+                        episode.youtube_link
                       );
+                      const replaced = tw.replace(
+                        "Jason Lengstorf",
+                        "@jlengstorf"
+                      );
+
+                      navigator.clipboard.writeText(replaced);
                       toast({
-                        title: "Copied Live Tweet",
+                        title: "Copied Twitter Live Tweet",
                       });
                     }}
                   >

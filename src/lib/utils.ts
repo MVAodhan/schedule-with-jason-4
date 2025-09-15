@@ -188,12 +188,12 @@ Details: ${link}
 `;
   return tweet;
 };
-export const liveTweet = (description: string) => {
+export const liveTweet = (description: string, link?: string) => {
   const tweet = `🔴 Live
 
 ${description}
 
-Watch Live: ${liveLink}
+Watch Live: ${link ? link : liveLink}
 `;
   return tweet;
 };
